@@ -1,0 +1,10 @@
+[project]
+name = "revlib-src-dev"
+version = "0.1.0"
+description = "Extract source code from public REVLib builds"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["requests"]
+
+[project.scripts]
+revlib-src-dev = "update:main"
