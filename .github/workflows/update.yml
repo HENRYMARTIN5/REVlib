@@ -20,7 +20,7 @@ jobs:
       - name: Install script and run
         run: |
           uv pip install -e ./dev
-          uv python -m revlib-src-dev
+          uv run revlib-src-dev
           
       - name: Check for changes
         id: changes
