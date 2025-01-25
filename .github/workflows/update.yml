@@ -5,7 +5,7 @@ on:
   workflow_dispatch:      # Allow manual trigger
 
 jobs:
-  test:
+  update:
     runs-on: ubuntu-latest
     permissions:
       contents: write    # Needed for pushing changes
@@ -19,7 +19,7 @@ jobs:
           
       - name: Install script and run
         run: |
-          uv pip install -e ./dev --system
+          uv pip install -e ./dev
           uv python -m revlib-src-dev
           
       - name: Check for changes
