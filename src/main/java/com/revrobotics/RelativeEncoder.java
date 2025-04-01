@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,10 @@ import com.revrobotics.spark.SparkMax;
 public interface RelativeEncoder {
   /**
    * Get the position of the motor. This returns the native units of 'rotations' by default, and can
-   * be changed by a scale factor using setPositionConversionFactor().
+   * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)}.
    *
    * @return Number of rotations of the motor
    */
@@ -47,7 +50,10 @@ public interface RelativeEncoder {
 
   /**
    * Get the velocity of the motor. This returns the native units of 'RPM' by default, and can be
-   * changed by a scale factor using setVelocityConversionFactor().
+   * changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}.
    *
    * @return Number the RPM of the motor
    */
@@ -55,7 +61,10 @@ public interface RelativeEncoder {
 
   /**
    * Set the position of the encoder. By default the units are 'rotations' and can be changed by a
-   * scale factor using setPositionConversionFactor().
+   * scale factor using {@link
+   * com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   * {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)}.
    *
    * @param position Number of rotations of the motor
    * @return {@link REVLibError#kOk} if successful

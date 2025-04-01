@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -54,7 +54,8 @@ public class SparkAnalogSensor implements AnalogInput {
 
   /**
    * Get the position of the sensor. Returns value in the native unit of 'volt' by default, and can
-   * be changed by a scale factor using setPositionConversionFactor().
+   * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AnalogSensorConfig#positionConversionFactor(double)}.
    *
    * @return Position of the sensor
    */
@@ -66,7 +67,8 @@ public class SparkAnalogSensor implements AnalogInput {
 
   /**
    * Get the velocity of the sensor. Returns value in the native units of 'volts per second' by
-   * default, and can be changed by a scale factor using setVelocityConversionFactor().
+   * default, and can * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AnalogSensorConfig#velocityConversionFactor(double)}.
    *
    * @return Velocity of the sensor in volts per second
    */

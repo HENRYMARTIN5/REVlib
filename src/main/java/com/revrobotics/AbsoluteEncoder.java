@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,8 @@ package com.revrobotics;
 public interface AbsoluteEncoder {
   /**
    * Get the position of the motor. This returns the native units of 'rotations' by default, and can
-   * be changed by a scale factor using setPositionConversionFactor().
+   * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AbsoluteEncoderConfig#positionConversionFactor(double)}.
    *
    * @return Number of rotations of the motor
    */
@@ -39,7 +40,8 @@ public interface AbsoluteEncoder {
 
   /**
    * Get the velocity of the motor. This returns the native units of 'rotations per minute' by
-   * default, and can be changed by a scale factor using setVelocityConversionFactor().
+   * default, and can * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AbsoluteEncoderConfig#velocityConversionFactor(double)}.
    *
    * @return Number of rotations per minute of the motor
    */

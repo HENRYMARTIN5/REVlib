@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -171,16 +171,6 @@ public class SparkAnalogSensorSim {
   }
 
   /**
-   * Set the position conversion factor of the sensor (1 by default)
-   *
-   * @param positionConversionFactor the factor to apply
-   */
-  public void setPositionConversionFactor(double positionConversionFactor) {
-    if (checkAndSetupSimDevice()) return;
-    m_positionConversionFactor.set(positionConversionFactor);
-  }
-
-  /**
    * Get the position conversion factor of the sensor (1 by default)
    *
    * @return the conversion factor
@@ -188,16 +178,6 @@ public class SparkAnalogSensorSim {
   public double getPositionConversionFactor() {
     if (checkAndSetupSimDevice()) return 0;
     return m_positionConversionFactor.get();
-  }
-
-  /**
-   * Set the velocity conversion factor of the sensor (1 by default)
-   *
-   * @param velocityConversionFactor the factor to apply
-   */
-  public void setVelocityConversionFactor(double velocityConversionFactor) {
-    if (checkAndSetupSimDevice()) return;
-    m_velocityConversionFactor.set(velocityConversionFactor);
   }
 
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -69,8 +69,16 @@ public class SparkClosedLoopController {
    * @param value The value to set depending on the control mode. For basic duty cycle control this
    *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
    *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using the setPositionConversionFactor() or
-   *     setVelocityConversionFactor() methods of the RelativeEncoder class
+   *     (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
    * @param ctrl the control type
    * @return {@link REVLibError#kOk} if successful
    */
@@ -86,8 +94,16 @@ public class SparkClosedLoopController {
    * @param value The value to set depending on the control mode. For basic duty cycle control this
    *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
    *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using the setPositionConversionFactor() or
-   *     setVelocityConversionFactor() methods of the RelativeEncoder class
+   *     (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
    * @param ctrl Is the control type to override with
    * @param slot The {@link ClosedLoopSlot} to use
    * @return {@link REVLibError#kOk} if successful
@@ -104,8 +120,16 @@ public class SparkClosedLoopController {
    * @param value The value to set depending on the control mode. For basic duty cycle control this
    *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
    *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using the setPositionConversionFactor() or
-   *     setVelocityConversionFactor() methods of the RelativeEncoder class
+   *     (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
    * @param ctrl Is the control type to override with
    * @param slot The {@link ClosedLoopSlot} to use
    * @param arbFeedforward A value from which is represented in voltage applied to the motor after
@@ -126,8 +150,16 @@ public class SparkClosedLoopController {
    * @param value The value to set depending on the control mode. For basic duty cycle control this
    *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
    *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using the setPositionConversionFactor() or
-   *     setVelocityConversionFactor() methods of the RelativeEncoder class
+   *     (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
    * @param ctrl Is the control type to override with
    * @param slot The {@link ClosedLoopSlot} to use
    * @param arbFeedforward A value from which is represented in voltage applied to the motor after

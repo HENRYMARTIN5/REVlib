@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2024 REV Robotics
+ * Copyright (c) 2021-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,7 +41,8 @@ public interface AnalogInput {
 
   /**
    * Get the position of the sensor. Returns value in the native unit of 'volt' by default, and can
-   * be changed by a scale factor using setPositionConversionFactor().
+   * be changed by a scale factor using {@link
+   * com.revrobotics.spark.config.AnalogSensorConfig#positionConversionFactor(double)}.
    *
    * @return Position of the sensor
    */
