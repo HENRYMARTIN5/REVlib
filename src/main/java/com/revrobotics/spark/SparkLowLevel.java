@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,13 +28,17 @@
 
 package com.revrobotics.spark;
 
+import com.revrobotics.NativeResourceCleaner;
+import com.revrobotics.REVDevice;
 import com.revrobotics.REVLibError;
 import com.revrobotics.jni.CANSparkJNI;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.jspecify.annotations.Nullable;
 
-public abstract class SparkLowLevel implements MotorController, AutoCloseable {
+public abstract class SparkLowLevel extends NativeResourceCleaner
+    implements MotorController, REVDevice, AutoCloseable {
   // TODO(Noah): Deprecate and introduce correctly named constants in a more appropriate spot
   public static final int kAPIMajorVersion = CANSparkJNI.c_Spark_GetAPIMajorRevision();
   public static final int kAPIMinorVersion = CANSparkJNI.c_Spark_GetAPIMinorRevision();
@@ -70,7 +74,8 @@ public abstract class SparkLowLevel implements MotorController, AutoCloseable {
     kStatus4(4),
     kStatus5(5),
     kStatus6(6),
-    kStatus7(7);
+    kStatus7(7),
+    kStatus8(8);
 
     @SuppressWarnings("MemberName")
     public final int value;
@@ -89,33 +94,101 @@ public abstract class SparkLowLevel implements MotorController, AutoCloseable {
     }
   }
 
-  public class PeriodicStatus0 {
+  public static class PeriodicStatus0 {
     public double appliedOutput;
-    public short faults;
-    public short stickyFaults;
-    public byte lock;
-    public MotorType motorType;
+    public double voltage;
+    public double current;
+    public int motorTemperature;
+    public boolean hardForwardLimitReached;
+    public boolean hardReverseLimitReached;
+    public boolean softForwardLimitReached;
+    public boolean softReverseLimitReached;
+    public boolean inverted;
+    public boolean primaryHeartbeatLock;
+  }
+
+  public static class PeriodicStatus1 {
+    public boolean otherFault;
+    public boolean motorTypeFault;
+    public boolean sensorFault;
+    public boolean canFault;
+    public boolean temperatureFault;
+    public boolean drvFault;
+    public boolean escEepromFault;
+    public boolean firmwareFault;
+    public boolean brownoutWarning;
+    public boolean overcurrentWarning;
+    public boolean escEepromWarning;
+    public boolean extEepromWarning;
+    public boolean sensorWarning;
+    public boolean stallWarning;
+    public boolean hasResetWarning;
+    public boolean otherWarning;
+    public boolean otherStickyFault;
+    public boolean motorTypeStickyFault;
+    public boolean sensorStickyFault;
+    public boolean canStickyFault;
+    public boolean temperatureStickyFault;
+    public boolean drvStickyFault;
+    public boolean escEepromStickyFault;
+    public boolean firmwareStickyFault;
+    public boolean brownoutStickyWarning;
+    public boolean overcurrentStickyWarning;
+    public boolean escEepromStickyWarning;
+    public boolean extEepromStickyWarning;
+    public boolean sensorStickyWarning;
+    public boolean stallStickyWarning;
+    public boolean hasResetStickyWarning;
+    public boolean otherStickyWarning;
     public boolean isFollower;
-    public boolean isInverted;
-    public boolean roboRIO;
   }
 
-  public class PeriodicStatus1 {
-    public double sensorVelocity;
-    public byte motorTemperature;
-    public double busVoltage;
-    public double outputCurrent;
+  public static class PeriodicStatus2 {
+    public double primaryEncoderVelocity;
+    public double primaryEncoderPosition;
   }
 
-  public class PeriodicStatus2 {
-    public double sensorPosition;
-    public double iAccum;
+  public static class PeriodicStatus3 {
+    public double analogVoltage;
+    public double analogVelocity;
+    public double analogPosition;
+  }
+
+  public static class PeriodicStatus4 {
+    public double externalOrAltEncoderVelocity;
+    public double externalOrAltEncoderPosition;
+  }
+
+  public static class PeriodicStatus5 {
+    public double dutyCycleEncoderVelocity;
+    public double dutyCycleEncoderPosition;
+  }
+
+  public static class PeriodicStatus6 {
+    public double unadjustedDutyCycle;
+    public double dutyCyclePeriod;
+    public boolean dutyCycleNoSignal;
+  }
+
+  public static class PeriodicStatus7 {
+    public double iAccumulation;
+  }
+
+  public static class PeriodicStatus8 {
+    public double setpoint;
+    public boolean isAtSetpoint;
+    public int selectedPidSlot;
+  }
+
+  public static class PeriodicStatus9 {
+    public double maxmotionSetpointPosition;
+    public double maxmotionSetpointVelocity;
   }
 
   protected enum SparkModel {
-    SparkMax(0),
+    Unknown(0),
     SparkFlex(1),
-    Unknown(255);
+    SparkMax(2);
 
     final int id;
 
@@ -161,16 +234,23 @@ public abstract class SparkLowLevel implements MotorController, AutoCloseable {
           "A CANSparkMax instance has already been created with this device ID: " + deviceId);
     }
     sparkHandle = CANSparkJNI.c_Spark_Create(deviceId, type.value, model.id);
+    registerCleaner(sparkHandle);
   }
 
   /** Closes the SPARK Controller */
   @Override
   public void close() {
-    boolean alreadyClosed = isClosed.getAndSet(true);
-    if (alreadyClosed) {
+    boolean wasClosed = isClosed.getAndSet(true);
+    if (wasClosed) {
       return;
     }
-    CANSparkJNI.c_Spark_Destroy(sparkHandle);
+    // Logically close the Spark
+    CANSparkJNI.c_Spark_Close(sparkHandle);
+  }
+
+  @Override
+  protected OnClean getCleanAction() {
+    return CANSparkJNI::c_Spark_Destroy;
   }
 
   /**
@@ -268,6 +348,96 @@ public abstract class SparkLowLevel implements MotorController, AutoCloseable {
   public void setPeriodicFrameTimeout(int timeoutMs) {
     throwIfClosed();
     CANSparkJNI.c_Spark_SetPeriodicFrameTimeout(sparkHandle, timeoutMs);
+  }
+
+  /**
+   * @return periodic status 0, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus0 getPeriodicStatus0() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus0(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 1, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus1 getPeriodicStatus1() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus1(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 2, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus2 getPeriodicStatus2() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus2(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 3, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus3 getPeriodicStatus3() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus3(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 4, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus4 getPeriodicStatus4() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus4(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 5, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus5 getPeriodicStatus5() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus5(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 6, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus6 getPeriodicStatus6() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus6(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 7, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus7 getPeriodicStatus7() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus7(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 8, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus8 getPeriodicStatus8() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus8(sparkHandle);
+  }
+
+  /**
+   * @return periodic status 9, or null if it's not found
+   */
+  @Nullable
+  public PeriodicStatus9 getPeriodicStatus9() {
+    throwIfClosed();
+    return CANSparkJNI.c_Spark_GetPeriodicStatus9(sparkHandle);
   }
 
   /**

@@ -28,11 +28,8 @@
 
 package com.revrobotics.spark;
 
-import static com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor.*;
-
 import com.revrobotics.jni.CANSparkJNI;
 import com.revrobotics.sim.*;
-import com.revrobotics.spark.config.ClosedLoopConfig;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.SimInt;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -53,7 +50,8 @@ public class SparkSim {
   private final DCMotor m_dcMotor;
   private final SimInt m_controlMode;
   private final MovingAverageFilterSim m_velocityAverage = new MovingAverageFilterSim(2, 0.016);
-  // private final MovingAverageFilterSim m_velocityAverage = new MovingAverageFilterSim(8, 0.032);
+  // private final MovingAverageFilterSim m_velocityAverage = new
+  // MovingAverageFilterSim(8, 0.032);
   private Boolean m_enable = null;
   private String m_deviceName;
 
@@ -230,7 +228,7 @@ public class SparkSim {
     double velocityFactor = 0;
     if (m_spark.getSparkModel() == SparkLowLevel.SparkModel.SparkFlex) {
       if (((SparkFlex) m_spark).configAccessor.closedLoop.getFeedbackSensor()
-          == ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder) {
+          == FeedbackSensor.kAbsoluteEncoder) {
         positionFactor =
             ((SparkFlex) m_spark).configAccessor.absoluteEncoder.getPositionConversionFactor();
         velocityFactor =
@@ -241,7 +239,7 @@ public class SparkSim {
       }
     } else if (m_spark.getSparkModel() == SparkLowLevel.SparkModel.SparkMax) {
       if (((SparkMax) m_spark).configAccessor.closedLoop.getFeedbackSensor()
-          == ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder) {
+          == FeedbackSensor.kAbsoluteEncoder) {
         positionFactor =
             ((SparkMax) m_spark).configAccessor.absoluteEncoder.getPositionConversionFactor();
         velocityFactor =
@@ -298,19 +296,8 @@ public class SparkSim {
                 (float) dt);
         break;
 
-        // Smart Motion
-      case 4:
-        // This control mechanism is deprecated. It is recommended to migrate to MAXMotion instead.
-        DriverStation.reportError(
-            "[REVLib Simulation error] "
-                + m_deviceName
-                + ": Smart Motion control is deprecated and not supported in simulation. "
-                + "It is recommended to migrate to MAXMotion instead.",
-            false);
-        return;
-
         // Current
-      case 5:
+      case 4:
         appliedOutput =
             CANSparkJNI.c_Spark_GetSimClosedLoopOutput(
                 m_spark.sparkHandle,
@@ -319,27 +306,15 @@ public class SparkSim {
                 (float) dt);
         break;
 
-        // Smart Velocity
-      case 6:
-        // This control mechanism is deprecated. It is recommended to migrate to MAXMotion Velocity
-        // mode instead.
-        DriverStation.reportError(
-            "[REVLib Simulation error] "
-                + m_deviceName
-                + ": Smart Velocity control is deprecated and not supported in simulation. "
-                + "It is recommended to migrate to MAXMotion Velocity Mode instead.",
-            false);
-        return;
-
         // MAXMotion Position Control
-      case 7:
+      case 5:
         appliedOutput =
             CANSparkJNI.c_Spark_GetSimMAXMotionPositionControlOutput(
                 m_spark.sparkHandle, (float) dt);
         break;
 
         // MAXMotion Position Control
-      case 8:
+      case 6:
         appliedOutput =
             CANSparkJNI.c_Spark_GetSimMAXMotionVelocityControlOutput(
                 m_spark.sparkHandle, (float) dt);
@@ -423,14 +398,14 @@ public class SparkSim {
     }
 
     // mirror position/velocity to selected sensor
-    ClosedLoopConfig.FeedbackSensor selectedFeedbackSensor;
+    FeedbackSensor selectedFeedbackSensor;
     if (m_spark.getSparkModel() == SparkLowLevel.SparkModel.SparkFlex) {
       selectedFeedbackSensor = ((SparkFlex) m_spark).configAccessor.closedLoop.getFeedbackSensor();
     } else if (m_spark.getSparkModel() == SparkLowLevel.SparkModel.SparkMax) {
       selectedFeedbackSensor = ((SparkMax) m_spark).configAccessor.closedLoop.getFeedbackSensor();
     } else {
       selectedFeedbackSensor =
-          kNoSensor; // if unknown device, quietly skip selected sensor mirroring
+          FeedbackSensor.kNoSensor; // if unknown device, quietly skip selected sensor mirroring
     }
 
     switch (selectedFeedbackSensor) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,14 +28,12 @@
 
 package com.revrobotics.spark.config;
 
-import com.revrobotics.spark.SparkBase;
-
 public class SparkFlexConfigAccessor extends SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the external encoder. To configure these values, use {@link
    * ExternalEncoderConfig} and call {@link
-   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode,
-   * SparkBase.PersistMode)}.
+   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.

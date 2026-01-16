@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,38 +39,38 @@ public class AbsoluteEncoderConfigAccessor {
 
   public boolean getInverted() {
     return CANSparkJNI.c_Spark_GetParameterBool(
-        sparkHandle, SparkParameter.kDutyCycleInverted.value);
+        sparkHandle, SparkParameters.kDutyCycleInverted.value);
   }
 
   public double getPositionConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDutyCyclePositionFactor.value);
+        sparkHandle, SparkParameters.kDutyCyclePositionFactor.value);
   }
 
   public double getVelocityConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDutyCycleVelocityFactor.value);
+        sparkHandle, SparkParameters.kDutyCycleVelocityFactor.value);
   }
 
   public double getZeroOffset() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDutyCycleOffset.value);
+        sparkHandle, SparkParameters.kDutyCycleOffset.value);
   }
 
   public int getAverageDepth() {
     int storedValue =
         CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kDutyCycleAverageDepth.value);
+            sparkHandle, SparkParameters.kDutyCycleAverageDepth.value);
     return 1 << storedValue;
   }
 
   public double getStartPulseUs() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDutyCycleEncoderStartPulseUs.value);
+        sparkHandle, SparkParameters.kDutyCycleEncoderStartPulseUs.value);
   }
 
   public double getEndPulseUs() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDutyCycleEncoderEndPulseUs.value);
+        sparkHandle, SparkParameters.kDutyCycleEncoderEndPulseUs.value);
   }
 }

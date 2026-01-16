@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -57,7 +57,7 @@ public class AnalogSensorConfig extends BaseConfig {
    * @return The modified {@link AnalogSensorConfig} object for method chaining
    */
   public AnalogSensorConfig inverted(boolean inverted) {
-    putParameter(SparkParameter.kAnalogInverted.value, inverted);
+    putParameter(SparkParameters.kAnalogInverted.value, inverted);
     return this;
   }
 
@@ -69,7 +69,7 @@ public class AnalogSensorConfig extends BaseConfig {
    * @return The modified {@link AnalogSensorConfig} object for method chaining
    */
   public AnalogSensorConfig positionConversionFactor(double factor) {
-    putParameter(SparkParameter.kAnalogRevPerVolt.value, (float) factor);
+    putParameter(SparkParameters.kAnalogPositionConversion.value, (float) factor);
     return this;
   }
 
@@ -81,7 +81,7 @@ public class AnalogSensorConfig extends BaseConfig {
    * @return The modified {@link AnalogSensorConfig} object for method chaining
    */
   public AnalogSensorConfig velocityConversionFactor(double factor) {
-    putParameter(SparkParameter.kAnalogRotationsPerVoltSec.value, (float) factor);
+    putParameter(SparkParameters.kAnalogVelocityConversion.value, (float) factor);
     return this;
   }
 }

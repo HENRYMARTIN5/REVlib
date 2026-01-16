@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,7 +41,8 @@ public class SparkFlex extends SparkBase {
   /**
    * Accessor for SPARK parameter values. This object contains fields and methods to retrieve
    * parameters that have been applied to the device. To set parameters, see {@link SparkBaseConfig}
-   * and {@link SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * and {@link SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.

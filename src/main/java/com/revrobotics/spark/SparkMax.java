@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,8 +28,10 @@
 
 package com.revrobotics.spark;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.jni.CANSparkJNI;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
@@ -54,7 +56,8 @@ public class SparkMax extends SparkBase {
   /**
    * Accessor for SPARK parameter values. This object contains fields and methods to retrieve
    * parameters that have been applied to the device. To set parameters, see {@link SparkBaseConfig}
-   * and {@link SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * and {@link SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -84,9 +87,48 @@ public class SparkMax extends SparkBase {
 
   /* ***** Extended Functions ****** */
 
+  /*
+   * @deprecated Use {@link SparkMax#configure(SparkBaseConfig,
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode} instead.
+   */
+  @Deprecated(since = "2026", forRemoval = true)
   @Override
   public REVLibError configure(
       SparkBaseConfig config, ResetMode resetMode, PersistMode persistMode) {
+    REVLibError status = super.configure(config, resetMode, persistMode);
+
+    synchronized (altEncoderLock) {
+      if (altEncoder != null) {
+        checkDataPortAlternateEncoder();
+      }
+    }
+
+    synchronized (absoluteEncoderLock) {
+      if (absoluteEncoder != null) {
+        checkDataPortAbsoluteEncoder();
+      }
+    }
+
+    synchronized (forwardLimitSwitchLock) {
+      if (forwardLimitSwitch != null) {
+        checkDataPortLimitSwitch();
+      }
+    }
+
+    synchronized (reverseLimitSwitchLock) {
+      if (reverseLimitSwitch != null) {
+        checkDataPortLimitSwitch();
+      }
+    }
+
+    return status;
+  }
+
+  @Override
+  public REVLibError configure(
+      SparkBaseConfig config,
+      com.revrobotics.ResetMode resetMode,
+      com.revrobotics.PersistMode persistMode) {
     REVLibError status = super.configure(config, resetMode, persistMode);
 
     synchronized (altEncoderLock) {

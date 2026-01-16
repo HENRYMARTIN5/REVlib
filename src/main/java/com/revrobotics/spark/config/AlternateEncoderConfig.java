@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,6 +32,20 @@ import com.revrobotics.config.BaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig.DataPortConfig;
 
 public class AlternateEncoderConfig extends BaseConfig {
+  public static class Presets {
+    /** REV Robotics - Through Bore Encoder */
+    public static final AlternateEncoderConfig REV_ThroughBoreEncoder =
+        new AlternateEncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - Through Bore Encoder V2 */
+    public static final AlternateEncoderConfig REV_ThroughBoreEncoderV2 =
+        new AlternateEncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - MAXSpline Encoder (via 6-pin JST) */
+    public static final AlternateEncoderConfig REV_SplineEncoder =
+        new AlternateEncoderConfig().countsPerRevolution(8192);
+  }
+
   public enum Type {
     kQuadrature(0);
 
@@ -79,7 +93,8 @@ public class AlternateEncoderConfig extends BaseConfig {
    * @return The modified {@link AlternateEncoderConfig} object for method chaining
    */
   public AlternateEncoderConfig setSparkMaxDataPortConfig() {
-    putParameter(SparkParameter.kDataPortConfig.value, DataPortConfig.kAlternateEncoder.value);
+    putParameter(
+        SparkParameters.kCompatibilityPortConfig.value, DataPortConfig.kAlternateEncoder.value);
     return this;
   }
 
@@ -91,7 +106,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig countsPerRevolution(int cpr) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncoderCountsPerRev.value, cpr);
+    putParameter(SparkParameters.kAltEncoderCountsPerRev.value, cpr);
     return this;
   }
 
@@ -103,7 +118,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig inverted(boolean inverted) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncoderInverted.value, inverted);
+    putParameter(SparkParameters.kAltEncoderInverted.value, inverted);
     return this;
   }
 
@@ -116,7 +131,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig positionConversionFactor(double factor) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncodePositionFactor.value, (float) factor);
+    putParameter(SparkParameters.kAltEncoderPositionConversion.value, (float) factor);
     return this;
   }
 
@@ -129,7 +144,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig velocityConversionFactor(double factor) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncoderVelocityFactor.value, (float) factor);
+    putParameter(SparkParameters.kAltEncoderVelocityConversion.value, (float) factor);
     return this;
   }
 
@@ -143,7 +158,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig averageDepth(int depth) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncoderAverageDepth.value, depth);
+    putParameter(SparkParameters.kAltEncoderAverageDepth.value, depth);
     return this;
   }
 
@@ -159,7 +174,7 @@ public class AlternateEncoderConfig extends BaseConfig {
    */
   public AlternateEncoderConfig measurementPeriod(int periodMs) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kAltEncoderSampleDelta.value, periodMs);
+    putParameter(SparkParameters.kAltEncoderSampleDelta.value, periodMs);
     return this;
   }
 }

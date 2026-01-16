@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,20 @@ package com.revrobotics.spark.config;
 import com.revrobotics.config.BaseConfig;
 
 public class EncoderConfig extends BaseConfig {
+  public static class Presets {
+    /** REV Robotics - Through Bore Encoder */
+    public static final EncoderConfig REV_ThroughBoreEncoder =
+        new EncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - Through Bore Encoder V2 */
+    public static final EncoderConfig REV_ThroughBoreEncoderV2 =
+        new EncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - MAXSpline Encoder (via 6-pin JST) */
+    public static final EncoderConfig REV_SplineEncoder =
+        new EncoderConfig().countsPerRevolution(8192);
+  }
+
   /** Create a new object to configure an Encoder. */
   public EncoderConfig() {
     super(CANType.kSpark);
@@ -59,7 +73,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig countsPerRevolution(int cpr) {
-    putParameter(SparkParameter.kEncoderCountsPerRev.value, cpr);
+    putParameter(SparkParameters.kEncoderCountsPerRev.value, cpr);
     return this;
   }
 
@@ -72,7 +86,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig inverted(boolean inverted) {
-    putParameter(SparkParameter.kEncoderInverted.value, inverted);
+    putParameter(SparkParameters.kEncoderInverted.value, inverted);
     return this;
   }
 
@@ -84,7 +98,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig positionConversionFactor(double factor) {
-    putParameter(SparkParameter.kPositionConversionFactor.value, (float) factor);
+    putParameter(SparkParameters.kPositionConversionFactor.value, (float) factor);
     return this;
   }
 
@@ -96,7 +110,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig velocityConversionFactor(double factor) {
-    putParameter(SparkParameter.kVelocityConversionFactor.value, (float) factor);
+    putParameter(SparkParameters.kVelocityConversionFactor.value, (float) factor);
     return this;
   }
 
@@ -109,7 +123,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig quadratureAverageDepth(int depth) {
-    putParameter(SparkParameter.kEncoderAverageDepth.value, depth);
+    putParameter(SparkParameters.kEncoderAverageDepth.value, depth);
     return this;
   }
 
@@ -124,7 +138,7 @@ public class EncoderConfig extends BaseConfig {
    * @return The modified {@link EncoderConfig} object for method chaining
    */
   public EncoderConfig quadratureMeasurementPeriod(int periodMs) {
-    putParameter(SparkParameter.kEncoderSampleDelta.value, periodMs << 1);
+    putParameter(SparkParameters.kEncoderSampleDelta.value, periodMs << 1);
     return this;
   }
 
@@ -151,7 +165,7 @@ public class EncoderConfig extends BaseConfig {
       default:
         depthIndex = 3;
     }
-    putParameter(SparkParameter.kHallSensorAverageDepth.value, depthIndex);
+    putParameter(SparkParameters.kUvwSensorAverageDepth.value, depthIndex);
     return this;
   }
 
@@ -168,7 +182,7 @@ public class EncoderConfig extends BaseConfig {
   public EncoderConfig uvwMeasurementPeriod(int periodMs) {
     // Convert from period (ms) to native units (seconds)
     double rate = (double) periodMs / 1000;
-    putParameter(SparkParameter.kHallSensorSampleRate.value, (float) rate);
+    putParameter(SparkParameters.kUvwSensorSampleRate.value, (float) rate);
     return this;
   }
 }

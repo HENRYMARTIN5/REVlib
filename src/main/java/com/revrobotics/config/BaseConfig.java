@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,7 @@ package com.revrobotics.config;
 import com.revrobotics.jni.CANCommonJNI;
 import com.revrobotics.jni.CANServoHubJNI;
 import com.revrobotics.jni.CANSparkJNI;
+import com.revrobotics.jni.DetachedEncoderJNI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public abstract class BaseConfig {
 
   protected enum CANType {
     kSpark(0),
-    kServoHub(1);
+    kServoHub(1),
+    kDetachedEncoder(2);
 
     @SuppressWarnings("MemberName")
     public final int value;
@@ -58,12 +60,26 @@ public abstract class BaseConfig {
   protected BaseConfig(CANType canType) {
     if (canType == CANType.kSpark) {
       getParameterTypeFuncPtr = CANSparkJNI::c_Spark_GetParameterType;
-    } else {
+    } else if (canType == CANType.kServoHub) {
       getParameterTypeFuncPtr = CANServoHubJNI::c_ServoHub_GetParameterType;
+    } else if (canType == CANType.kDetachedEncoder) {
+      getParameterTypeFuncPtr = DetachedEncoderJNI::getParameterType;
     }
   }
 
-  protected void putParameter(int parameterId, Object value) {
+  protected void putParameter(int parameterId, int value) {
+    parameters.put(parameterId, value);
+  }
+
+  protected void putParameter(int parameterId, float value) {
+    parameters.put(parameterId, value);
+  }
+
+  protected void putParameter(int parameterId, boolean value) {
+    parameters.put(parameterId, value);
+  }
+
+  private void putParameter(int parameterId, Object value) {
     parameters.put(parameterId, value);
   }
 

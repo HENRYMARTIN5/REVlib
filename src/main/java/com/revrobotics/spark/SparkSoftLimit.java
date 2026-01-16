@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics.spark;
 
 import com.revrobotics.jni.CANSparkJNI;
 
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
+/**
+ * Get an instance of this class by using {@link SparkBase#getForwardSoftLimit()} or {@link
+ * SparkBase#getReverseSoftLimit()}.
+ */
+public class SparkSoftLimit {
+  // package-private (can only be used by other classes in this package)
+  public enum SoftLimitDirection {
+    kForward(0),
+    kReverse(1);
 
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
+    @SuppressWarnings("MemberName")
+    public final int value;
+
+    SoftLimitDirection(int value) {
+      this.value = value;
+    }
+
+    public static SoftLimitDirection fromId(int id) {
+      switch (id) {
+        case 1:
+          return kReverse;
+        default:
+          return kForward;
+      }
+    }
   }
 
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
+  private final SparkBase m_device;
+  private final SoftLimitDirection m_softLimitDirection;
+
+  // package-private (can only be used by other classes in this package)
+  SparkSoftLimit(SparkBase device, SoftLimitDirection direction) {
+    m_device = device;
+    m_softLimitDirection = direction;
+
+    if (direction == null) {
+      throw new IllegalArgumentException("soft limit must not be null");
+    }
   }
 
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
-  }
-
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
-  }
-
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
+  /**
+   * Returns {@code true} if the soft limit has been reached.
+   *
+   * @return {@code true} if the soft limit is reached
+   */
+  public boolean isReached() {
+    m_device.throwIfClosed();
+    return CANSparkJNI.c_Spark_GetSoftLimit(m_device.sparkHandle, m_softLimitDirection.value);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,7 +34,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 0. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -44,7 +44,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 1. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -54,7 +54,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 2. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -64,7 +64,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 3. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -74,7 +74,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 4. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -84,7 +84,7 @@ public class ServoHubConfigAccessor {
   /**
    * Accessor for parameters relating to servo channel 5. To configure these values, use {@link
    * ServoChannelConfig} and call {@link com.revrobotics.servohub.ServoHub#configure(ServoHubConfig,
-   * ServoHub.ResetMode)}.
+   * com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics.encoder;
 
-import com.revrobotics.jni.CANSparkJNI;
-
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
-
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
-  }
-
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
-  }
-
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
-  }
-
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
-  }
-
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
+public class SplineEncoder extends DetachedEncoder {
+  /**
+   * Create a new object to control a MAXSpline Encoder
+   *
+   * @param id The device ID.
+   */
+  public SplineEncoder(int id) {
+    super(id, Model.MAXSplineEncoder);
   }
 }

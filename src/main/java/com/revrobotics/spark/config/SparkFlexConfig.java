@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,6 +30,24 @@ package com.revrobotics.spark.config;
 
 public class SparkFlexConfig extends SparkBaseConfig {
   public final ExternalEncoderConfig externalEncoder = new ExternalEncoderConfig();
+
+  public static class Presets {
+    /** REV Robotics - NEO Brushless Motor V1.1 */
+    public static final SparkBaseConfig REV_NEO = new SparkFlexConfig().smartCurrentLimit(60);
+
+    /** REV Robotics - NEO Brushless Motor 2.0 */
+    public static final SparkBaseConfig REV_NEO_2 = new SparkFlexConfig().smartCurrentLimit(60);
+
+    /** REV Robotics - NEO 550 Brushless Motor */
+    public static final SparkBaseConfig REV_NEO_550 = new SparkFlexConfig().smartCurrentLimit(15);
+
+    /** REV Robotics - NEO Vortex Brushless Motor */
+    public static final SparkBaseConfig REV_Vortex = new SparkFlexConfig().smartCurrentLimit(80);
+
+    /* CTRE - Minion: Standalone Brushless Motor */
+    public static final SparkBaseConfig CTRE_Minion =
+        new SparkFlexConfig().smartCurrentLimit(30).advanceCommutation(120.0);
+  }
 
   /**
    * Applies settings from another {@link SparkFlexConfig} to this one, including all of its nested

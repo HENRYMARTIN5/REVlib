@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,172 +38,244 @@ public class SignalsConfigAccessor {
   }
 
   public int getAppliedOutputPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus0Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus0Period.value);
   }
 
   public boolean getAppliedOutputAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus0.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_0.value)
         != 0;
   }
 
   public int getBusVoltagePeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus0Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus0Period.value);
   }
 
   public boolean getBusVoltageAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus0.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_0.value)
         != 0;
   }
 
   public int getOutputCurrentPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus0Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus0Period.value);
   }
 
   public boolean getOutputCurrentAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus0.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_0.value)
         != 0;
   }
 
   public int getMotorTemperaturePeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus0Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus0Period.value);
   }
 
   public boolean getMotorTemperatureAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus0.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_0.value)
         != 0;
   }
 
   public int getLimitsPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus0Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus0Period.value);
   }
 
   public boolean getLimitsAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus0.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_0.value)
         != 0;
   }
 
   public int getFaultsPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus1Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus1Period.value);
   }
 
   public boolean getFaultsAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus1.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_1.value)
         != 0;
   }
 
   public int getWarningsPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus1Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus1Period.value);
   }
 
   public boolean getWarningsAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus1.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_1.value)
         != 0;
   }
 
   public int getPrimaryEncoderVelocityPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus2Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus2Period.value);
   }
 
   public boolean getPrimaryEncoderVelocityAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus2.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_2.value)
         != 0;
   }
 
   public int getPrimaryEncoderPositionPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus2Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus2Period.value);
   }
 
   public boolean getPrimaryEncoderPositionAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus2.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_2.value)
         != 0;
   }
 
   public int getAnalogVoltagePeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus3Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus3Period.value);
   }
 
   public boolean getAnalogVoltageAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus3.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_3.value)
         != 0;
   }
 
   public int getAnalogVelocityPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus3Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus3Period.value);
   }
 
   public boolean getAnalogVelocityAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus3.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_3.value)
         != 0;
   }
 
   public int getAnalogPositionPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus3Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus3Period.value);
   }
 
   public boolean getAnalogPositionAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus3.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_3.value)
         != 0;
   }
 
   public int getExternalOrAltEncoderVelocityPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus4Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus4Period.value);
   }
 
   public boolean getExternalOrAltEncoderVelocityAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus4.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_4.value)
         != 0;
   }
 
   public int getExternalOrAltEncoderPositionPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus4Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus4Period.value);
   }
 
   public boolean getExternalOrAltEncoderPositionAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus4.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_4.value)
         != 0;
   }
 
   public int getAbsoluteEncoderVelocityPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus5Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus5Period.value);
   }
 
   public boolean getAbsoluteEncoderVelocityAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus5.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_5.value)
         != 0;
   }
 
   public int getAbsoluteEncoderPositionPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus5Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus5Period.value);
   }
 
   public boolean getAbsoluteEncoderPositionAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus5.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_5.value)
         != 0;
   }
 
   public int getIAccumulationPeriodMs() {
-    return CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kStatus7Period.value);
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus7Period.value);
   }
 
   public boolean getIAccumulationAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kForceEnableStatus7.value)
+            sparkHandle, SparkParameters.kForceEnableStatus_7.value)
+        != 0;
+  }
+
+  public int getSetpointPeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus8Period.value);
+  }
+
+  public boolean getSetpointAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_8.value)
+        != 0;
+  }
+
+  public int getIsAtSetpointPeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus8Period.value);
+  }
+
+  public boolean getIsAtSetpointAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_8.value)
+        != 0;
+  }
+
+  public int getSelectedSlotPeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus8Period.value);
+  }
+
+  public boolean getSelectedSlotAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_8.value)
+        != 0;
+  }
+
+  public int getMAXMotionSetpointPositionPeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus9Period.value);
+  }
+
+  public boolean getMAXMotionSetpointPositionAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_9.value)
+        != 0;
+  }
+
+  public int getMAXMotionSetpointVelocityPeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus9Period.value);
+  }
+
+  public boolean getMAXMotionSetpointVelocityAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_9.value)
         != 0;
   }
 }

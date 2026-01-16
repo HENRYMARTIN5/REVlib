@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics;
 
-import com.revrobotics.jni.CANSparkJNI;
+import java.lang.ref.Cleaner;
 
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
+public abstract class NativeResourceCleaner {
+  private static final Cleaner CLEANER = Cleaner.create();
 
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
+  protected final void registerCleaner(long pointer) {
+    var cleanAction = getCleanAction();
+    Runnable runnable = () -> cleanAction.performClean(pointer);
+    CLEANER.register(this, runnable);
   }
 
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
+  @FunctionalInterface
+  protected interface OnClean {
+    void performClean(long pointer);
   }
 
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
-  }
-
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
-  }
-
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
-  }
+  /**
+   * Note: it is important that no reference to 'this' is taken in the implementation.
+   *
+   * @return an action to run on clean
+   */
+  protected abstract OnClean getCleanAction();
 }

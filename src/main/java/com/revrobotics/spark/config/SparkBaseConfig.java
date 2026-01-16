@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,8 +30,6 @@ package com.revrobotics.spark.config;
 
 import com.revrobotics.config.BaseConfig;
 import com.revrobotics.spark.SparkBase;
-
-// TODO(Noah): Look into finding a way to express "phase" that is more clear
 
 public abstract class SparkBaseConfig extends BaseConfig {
   public final AbsoluteEncoderConfig absoluteEncoder = new AbsoluteEncoderConfig();
@@ -193,7 +191,7 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig idleMode(IdleMode idleMode) {
-    putParameter(SparkParameter.kIdleMode.value, idleMode.value);
+    putParameter(SparkParameters.kIdleMode.value, idleMode.value);
     return this;
   }
 
@@ -207,7 +205,7 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig inverted(boolean inverted) {
-    putParameter(SparkParameter.kInverted.value, inverted);
+    putParameter(SparkParameters.kInverted.value, inverted);
     return this;
   }
 
@@ -277,9 +275,9 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig smartCurrentLimit(int stallLimit, int freeLimit, int limitRpm) {
-    putParameter(SparkParameter.kSmartCurrentStallLimit.value, stallLimit);
-    putParameter(SparkParameter.kSmartCurrentFreeLimit.value, freeLimit);
-    putParameter(SparkParameter.kSmartCurrentConfig.value, limitRpm);
+    putParameter(SparkParameters.kSmartCurrentStallLimit.value, stallLimit);
+    putParameter(SparkParameters.kSmartCurrentFreeLimit.value, freeLimit);
+    putParameter(SparkParameters.kSmartCurrentConfig.value, limitRpm);
     return this;
   }
 
@@ -332,8 +330,23 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig secondaryCurrentLimit(double limit, int chopCycles) {
-    putParameter(SparkParameter.kCurrentChop.value, (float) limit);
-    putParameter(SparkParameter.kCurrentChopCycles.value, chopCycles);
+    putParameter(SparkParameters.kCurrentChop.value, (float) limit);
+    putParameter(SparkParameters.kCurrentChopCycles.value, chopCycles);
+    return this;
+  }
+
+  /**
+   * Advances the commutation angle of the motor by a specified number of degrees.
+   *
+   * <p>Warning: This is an advanced feature that should only be used if you know what you are
+   * doing. Incorrectly setting the commutation angle can cause changes to torque, efficiency, and
+   * the operating range of the motor.
+   *
+   * @param byDegrees The number of degrees to advance the commutation angle
+   * @return The modified SparkBaseConfig object for method chaining
+   */
+  public SparkBaseConfig advanceCommutation(double byDegrees) {
+    putParameter(SparkParameters.kCommutationAdvance.value, (float) byDegrees);
     return this;
   }
 
@@ -350,7 +363,7 @@ public abstract class SparkBaseConfig extends BaseConfig {
       rate = 1.0 / rate;
     }
 
-    putParameter(SparkParameter.kRampRate.value, (float) rate);
+    putParameter(SparkParameters.kOpenLoopRampRate.value, (float) rate);
     return this;
   }
 
@@ -367,7 +380,7 @@ public abstract class SparkBaseConfig extends BaseConfig {
       rate = 1.0 / rate;
     }
 
-    putParameter(SparkParameter.kClosedLoopRampRate.value, (float) rate);
+    putParameter(SparkParameters.kClosedLoopRampRate.value, (float) rate);
     return this;
   }
 
@@ -379,8 +392,8 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig voltageCompensation(double nominalVoltage) {
-    putParameter(SparkParameter.kCompensatedNominalVoltage.value, (float) nominalVoltage);
-    putParameter(SparkParameter.kVoltageCompMode.value, 2);
+    putParameter(SparkParameters.kCompensatedNominalVoltage.value, (float) nominalVoltage);
+    putParameter(SparkParameters.kVoltageCompensationMode.value, 2);
     return this;
   }
 
@@ -390,7 +403,7 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig disableVoltageCompensation() {
-    putParameter(SparkParameter.kVoltageCompMode.value, 0);
+    putParameter(SparkParameters.kVoltageCompensationMode.value, 0);
     return this;
   }
 
@@ -455,8 +468,8 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig follow(int leaderCanId, boolean invert) {
-    putParameter(SparkParameter.kFollowerModeLeaderId.value, leaderCanId);
-    putParameter(SparkParameter.kFollowerModeIsInverted.value, invert);
+    putParameter(SparkParameters.kFollowerModeLeaderId.value, leaderCanId);
+    putParameter(SparkParameters.kFollowerModeIsInverted.value, invert);
     return this;
   }
 
@@ -466,8 +479,8 @@ public abstract class SparkBaseConfig extends BaseConfig {
    * @return The modified {@link SparkBaseConfig} object for method chaining
    */
   public SparkBaseConfig disableFollowerMode() {
-    putParameter(SparkParameter.kFollowerModeLeaderId.value, 0);
-    putParameter(SparkParameter.kFollowerModeIsInverted.value, false);
+    putParameter(SparkParameters.kFollowerModeLeaderId.value, 0);
+    putParameter(SparkParameters.kFollowerModeIsInverted.value, false);
     return this;
   }
 

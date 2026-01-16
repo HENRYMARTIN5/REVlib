@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2024 REV Robotics
+ * Copyright (c) 2018-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,14 +28,20 @@
 
 package com.revrobotics.spark;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.jni.CANSparkJNI;
 import com.revrobotics.jni.REVLibJNI;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public abstract class SparkBase extends SparkLowLevel {
+  /*
+   * @deprecated Use {@link com.revrobotics.ResetMode} instead.
+   */
+  @Deprecated(since = "2026", forRemoval = true)
   public enum ResetMode {
     kNoResetSafeParameters(0),
     kResetSafeParameters(1);
@@ -48,6 +54,10 @@ public abstract class SparkBase extends SparkLowLevel {
     }
   }
 
+  /*
+   * @deprecated Use {@link com.revrobotics.PersistMode} instead.
+   */
+  @Deprecated(since = "2026", forRemoval = true)
   public enum PersistMode {
     kNoPersistParameters(0),
     kPersistParameters(1);
@@ -113,19 +123,9 @@ public abstract class SparkBase extends SparkLowLevel {
     kVelocity(1),
     kVoltage(2),
     kPosition(3),
-    /**
-     * @deprecated It is recommended to migrate to MAXMotion instead.
-     */
-    @Deprecated(forRemoval = true)
-    kSmartMotion(4),
-    kCurrent(5),
-    /**
-     * @deprecated It is recommended to migrate to MAXMotion Velocity mode instead.
-     */
-    @Deprecated(forRemoval = true)
-    kSmartVelocity(6),
-    kMAXMotionPositionControl(7),
-    kMAXMotionVelocityControl(8);
+    kCurrent(4),
+    kMAXMotionPositionControl(5),
+    kMAXMotionVelocityControl(6);
 
     @SuppressWarnings("MemberName")
     public final int value;
@@ -152,6 +152,12 @@ public abstract class SparkBase extends SparkLowLevel {
 
   protected SparkLimitSwitch reverseLimitSwitch;
   protected final Object reverseLimitSwitchLock = new Object();
+
+  protected SparkSoftLimit forwardSoftLimit;
+  protected final Object forwardSoftLimitLock = new Object();
+
+  protected SparkSoftLimit reverseSoftLimit;
+  protected final Object reverseSoftLimitLock = new Object();
 
   // Only used for get() and set() API
   private double m_setpoint = 0.0;
@@ -278,7 +284,10 @@ public abstract class SparkBase extends SparkLowLevel {
    * @param resetMode Whether to reset safe parameters before setting the configuration
    * @param persistMode Whether to persist the parameters after setting the configuration
    * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   *     com.revrobotics.PersistMode)} instead.
    */
+  @Deprecated(since = "2026", forRemoval = true)
   public REVLibError configure(
       SparkBaseConfig config, ResetMode resetMode, PersistMode persistMode) {
     throwIfClosed();
@@ -289,6 +298,49 @@ public abstract class SparkBase extends SparkLowLevel {
                 config.flatten(),
                 resetMode == ResetMode.kResetSafeParameters,
                 persistMode == PersistMode.kPersistParameters));
+
+    if (status != REVLibError.kOk) {
+      // Check if fatal error
+      if (status == REVLibError.kTimeout
+          || status == REVLibError.kCannotPersistParametersWhileEnabled) {
+        return status;
+      }
+
+      throw new IllegalStateException(REVLibJNI.c_REVLib_ErrorFromCode(status.value));
+    }
+
+    return status;
+  }
+
+  /**
+   * Set the configuration for the SPARK.
+   *
+   * <p>If {@code resetMode} is {@link com.revrobotics.ResetMode#kResetSafeParameters}, this method
+   * will reset safe writable parameters to their default values before setting the given
+   * configuration. The following parameters will not be reset by this action: CAN ID, Motor Type,
+   * Idle Mode, PWM Input Deadband, and Duty Cycle Offset.
+   *
+   * <p>If {@code persistMode} is {@link com.revrobotics.PersistMode#kPersistParameters}, this
+   * method will save all parameters to the SPARK's non-volatile memory after setting the given
+   * configuration. This will allow parameters to persist across power cycles.
+   *
+   * @param config The desired SPARK configuration
+   * @param resetMode Whether to reset safe parameters before setting the configuration
+   * @param persistMode Whether to persist the parameters after setting the configuration
+   * @return {@link REVLibError#kOk} if successful
+   */
+  public REVLibError configure(
+      SparkBaseConfig config,
+      com.revrobotics.ResetMode resetMode,
+      com.revrobotics.PersistMode persistMode) {
+    throwIfClosed();
+    REVLibError status =
+        REVLibError.fromInt(
+            CANSparkJNI.c_Spark_Configure(
+                this.sparkHandle,
+                config.flatten(),
+                resetMode == com.revrobotics.ResetMode.kResetSafeParameters,
+                persistMode == com.revrobotics.PersistMode.kPersistParameters));
 
     if (status != REVLibError.kOk) {
       // Check if fatal error
@@ -322,7 +374,10 @@ public abstract class SparkBase extends SparkLowLevel {
    * @param resetMode Whether to reset safe parameters before setting the configuration
    * @param persistMode Whether to persist the parameters after setting the configuration
    * @return {@link REVLibError#kOk}
+   * @deprecated Use {@link SparkBase#configureAsync(SparkBaseConfig, com.revrobotics.ResetMode,
+   *     com.revrobotics.PersistMode)} instead.
    */
+  @Deprecated(since = "2026", forRemoval = true)
   public REVLibError configureAsync(
       SparkBaseConfig config, ResetMode resetMode, PersistMode persistMode) {
     throwIfClosed();
@@ -332,6 +387,39 @@ public abstract class SparkBase extends SparkLowLevel {
             config.flatten(),
             resetMode == ResetMode.kResetSafeParameters,
             persistMode == PersistMode.kPersistParameters));
+  }
+
+  /**
+   * Set the configuration for the SPARK without waiting for a response.
+   *
+   * <p>If {@code resetMode} is {@link com.revrobotics.ResetMode#kResetSafeParameters}, this method
+   * will reset safe writable parameters to their default values before setting the given
+   * configuration. The following parameters will not be reset by this action: CAN ID, Motor Type,
+   * Idle Mode, PWM Input Deadband, and Duty Cycle Offset.
+   *
+   * <p>If {@code persistMode} is {@link com.revrobotics.PersistMode#kPersistParameters}, this
+   * method will save all parameters to the SPARK's non-volatile memory after setting the given
+   * configuration. This will allow parameters to persist across power cycles.
+   *
+   * <p>NOTE: This method will immediately return {@link REVLibError#kOk} and the action will be
+   * done in the background. Any errors that occur will be reported to the driver station.
+   *
+   * @param config The desired SPARK configuration
+   * @param resetMode Whether to reset safe parameters before setting the configuration
+   * @param persistMode Whether to persist the parameters after setting the configuration
+   * @return {@link REVLibError#kOk}
+   */
+  public REVLibError configureAsync(
+      SparkBaseConfig config,
+      com.revrobotics.ResetMode resetMode,
+      com.revrobotics.PersistMode persistMode) {
+    throwIfClosed();
+    return REVLibError.fromInt(
+        CANSparkJNI.c_Spark_ConfigureAsync(
+            this.sparkHandle,
+            config.flatten(),
+            resetMode == com.revrobotics.ResetMode.kResetSafeParameters,
+            persistMode == com.revrobotics.PersistMode.kPersistParameters));
   }
 
   /**
@@ -422,6 +510,36 @@ public abstract class SparkBase extends SparkLowLevel {
         reverseLimitSwitch = new SparkLimitSwitch(this, SparkLimitSwitch.Direction.kReverse);
       }
       return reverseLimitSwitch;
+    }
+  }
+
+  /**
+   * Returns an object for interfacing with the forward soft limit.
+   *
+   * @return An object for interfacing with the forward soft limit.
+   */
+  public SparkSoftLimit getForwardSoftLimit() {
+    throwIfClosed();
+    synchronized (forwardSoftLimitLock) {
+      if (forwardSoftLimit == null) {
+        forwardSoftLimit = new SparkSoftLimit(this, SparkSoftLimit.SoftLimitDirection.kForward);
+      }
+      return forwardSoftLimit;
+    }
+  }
+
+  /**
+   * Returns an object for interfacing with the reverse soft limit.
+   *
+   * @return An object for interfacing with the reverse soft limit.
+   */
+  public SparkSoftLimit getReverseSoftLimit() {
+    throwIfClosed();
+    synchronized (reverseSoftLimitLock) {
+      if (reverseSoftLimit == null) {
+        reverseSoftLimit = new SparkSoftLimit(this, SparkSoftLimit.SoftLimitDirection.kReverse);
+      }
+      return reverseSoftLimit;
     }
   }
 

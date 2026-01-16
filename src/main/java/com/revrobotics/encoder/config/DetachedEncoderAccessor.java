@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2025-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics.encoder.config;
 
-import com.revrobotics.jni.CANSparkJNI;
+import com.revrobotics.jni.DetachedEncoderJNI;
 
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
+public class DetachedEncoderAccessor {
+  private final long handle;
 
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
+  public DetachedEncoderAccessor(long handle) {
+    this.handle = handle;
   }
 
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
+  public boolean isInverted() {
+    return DetachedEncoderJNI.isInverted(handle);
   }
 
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
+  public int getAverageDepth() {
+    return DetachedEncoderJNI.getAverageDepth(handle);
   }
 
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
+  public float getPositionConversionFactor() {
+    return DetachedEncoderJNI.getPositionConversionFactor(handle);
   }
 
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
+  public float getVelocityConversionFactor() {
+    return DetachedEncoderJNI.getVelocityConversionFactor(handle);
+  }
+
+  public int getVelocityAverageDepth() {
+    return DetachedEncoderJNI.getDutyCycleAverageDepth(handle);
+  }
+
+  public float getAngleConversionFactor() {
+    return DetachedEncoderJNI.getAngleConversionFactor(handle);
+  }
+
+  public boolean isZeroCentered() {
+    return DetachedEncoderJNI.isDutyCycleZeroCentered(handle);
+  }
+
+  public float getAbsoluteOffset() {
+    return DetachedEncoderJNI.getDutyCycleOffset(handle);
   }
 }

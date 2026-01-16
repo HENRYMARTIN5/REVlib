@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2024 REV Robotics
+ * Copyright (c) 2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,25 +26,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.jni;
+package com.revrobotics;
 
-public class CANSWDLJNI extends RevJNIWrapper {
-  /**
-   * Add a device to be updated
-   *
-   * @param numDevicesToAdd The total number of devices you wish to update. This must match the
-   *     number of motor controller IDs you pass into the next parameter
-   * @param deviceIDs The device IDs you wish to update as a list of any size. Length must match the
-   *     numDevicesToAdd parameter
-   */
-  public static native void AddDevice(int numDevicesToAdd, int... deviceIDs);
-
-  /**
-   * Begin the software update for the sparks. You can call this function repeatedly to get the
-   * status of the update
-   *
-   * @param fileName The filename of the bin file to send to the Spark MAXs
-   * @return The percent complete of the download
-   */
-  public static native int RunSWDL(String fileName);
-}
+public interface REVDevice {}

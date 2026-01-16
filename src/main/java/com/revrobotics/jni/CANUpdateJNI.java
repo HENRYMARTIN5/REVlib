@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2020-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,27 +26,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics.jni;
 
-public class SparkMaxConfigAccessor extends SparkBaseConfigAccessor {
+public class CANUpdateJNI extends RevJNIWrapper {
   /**
-   * Accessor for parameters relating to the alternate encoder. To configure these values, use
-   * {@link AlternateEncoderConfig} and call {@link
-   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
-   * com.revrobotics.PersistMode)}.
+   * Set the list of devices to update.
    *
-   * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
-   * infrequently.
+   * @param deviceIDlist The device IDs you wish to update as an array of integers.
+   * @return True if the devices were set successfully, false if there was an error
    */
-  public final AlternateEncoderConfigAccessor alternateEncoder;
+  public static native boolean SetSWDLDevices(int[] deviceIDlist);
 
   /**
-   * Not intended for team use. Only use this if you know what you are doing!
-   *
-   * @param sparkHandle
+   * Close, free, and reset the SWDL state. This is called automatically when the SWDL process
+   * completes or fails, but can also be called to reset the state if you need to start over.
    */
-  public SparkMaxConfigAccessor(long sparkHandle) {
-    super(sparkHandle);
-    alternateEncoder = new AlternateEncoderConfigAccessor(sparkHandle);
-  }
+  public static native void ResetSWDL();
+
+  /**
+   * Iterate through the SWDL process, allowing for progress updates. Devices must be set before
+   * calling this function. This function should be called repeatedly until it returns 100% or -1
+   * (error). It resets state on error or completion. This function is not thread-safe, and only one
+   * thread should call it at a time.
+   *
+   * @param dfuFilePath The path to the DFU file.
+   * @param binFilePath The path to the binary file.
+   * @return The current progress percentage (0-100) or -1 if an error occurs.
+   */
+  public static native int IterateSWDL(String dfuFilePath, String binFilePath);
+
+  /**
+   * Check if the checksum fail frame is present in the last 5 seconds. A delay should be added
+   * before calling this function.
+   *
+   * @return true if the checksum fail frame is present, false otherwise.
+   */
+  public static native boolean SWDLChecksumFailFramePresent();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -59,7 +59,7 @@ public class SoftLimitConfig extends BaseConfig {
    * @return The modified {@link SoftLimitConfig} object for method chaining
    */
   public SoftLimitConfig forwardSoftLimit(double limit) {
-    putParameter(SparkParameter.kSoftLimitFwd.value, (float) limit);
+    putParameter(SparkParameters.kSoftLimitForward.value, (float) limit);
     return this;
   }
 
@@ -70,7 +70,7 @@ public class SoftLimitConfig extends BaseConfig {
    * @return The modified {@link SoftLimitConfig} object for method chaining
    */
   public SoftLimitConfig forwardSoftLimitEnabled(boolean enabled) {
-    putParameter(SparkParameter.kSoftLimitFwdEn.value, enabled);
+    putParameter(SparkParameters.kSoftLimitFwdEn.value, enabled);
     return this;
   }
 
@@ -83,7 +83,7 @@ public class SoftLimitConfig extends BaseConfig {
    * @return The modified {@link SoftLimitConfig} object for method chaining
    */
   public SoftLimitConfig reverseSoftLimit(double limit) {
-    putParameter(SparkParameter.kSoftLimitRev.value, (float) limit);
+    putParameter(SparkParameters.kSoftLimitReverse.value, (float) limit);
     return this;
   }
 
@@ -94,7 +94,7 @@ public class SoftLimitConfig extends BaseConfig {
    * @return The modified {@link SoftLimitConfig} object for method chaining
    */
   public SoftLimitConfig reverseSoftLimitEnabled(boolean enabled) {
-    putParameter(SparkParameter.kSoftLimitRevEn.value, enabled);
+    putParameter(SparkParameters.kSoftLimitRevEn.value, enabled);
     return this;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2024 REV Robotics
+ * Copyright (c) 2020-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,8 @@ public class CANServoHubJNI extends RevJNIWrapper {
 
   public static native long c_ServoHub_Create(int deviceId);
 
+  public static native void c_ServoHub_Close(long handle);
+
   public static native void c_ServoHub_Destroy(long handle);
 
   public static native void c_ServoHub_GetFirmwareVersion(long handle, FirmwareVersion version);
@@ -56,15 +58,15 @@ public class CANServoHubJNI extends RevJNIWrapper {
 
   public static native int c_ServoHub_GetControlFramePeriod(long handle);
 
-  public static native void c_ServoHub_GetPeriodStatus0(long handle, PeriodicStatus0 status0);
+  public static native boolean c_ServoHub_GetPeriodStatus0(long handle, PeriodicStatus0 status0);
 
-  public static native void c_ServoHub_GetPeriodStatus1(long handle, PeriodicStatus1 status1);
+  public static native boolean c_ServoHub_GetPeriodStatus1(long handle, PeriodicStatus1 status1);
 
-  public static native void c_ServoHub_GetPeriodStatus2(long handle, PeriodicStatus2 status2);
+  public static native boolean c_ServoHub_GetPeriodStatus2(long handle, PeriodicStatus2 status2);
 
-  public static native void c_ServoHub_GetPeriodStatus3(long handle, PeriodicStatus3 status3);
+  public static native boolean c_ServoHub_GetPeriodStatus3(long handle, PeriodicStatus3 status3);
 
-  public static native void c_ServoHub_GetPeriodStatus4(long handle, PeriodicStatus4 status4);
+  public static native boolean c_ServoHub_GetPeriodStatus4(long handle, PeriodicStatus4 status4);
 
   // CANServoHub
   public static native int c_ServoHub_Configure(

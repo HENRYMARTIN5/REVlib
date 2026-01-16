@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2024-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+package com.revrobotics.spark;
 
-import com.revrobotics.jni.CANSparkJNI;
+public enum FeedbackSensor {
+  kNoSensor(0),
+  kPrimaryEncoder(1),
+  kAnalogSensor(2),
+  kAlternateOrExternalEncoder(3),
+  kAbsoluteEncoder(4),
+  kDetachedAbsoluteEncoder(5),
+  kDetachedRelativeEncoder(6);
 
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
+  @SuppressWarnings("MemberName")
+  public final int value;
 
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
+  FeedbackSensor(int value) {
+    this.value = value;
   }
 
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
-  }
-
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
-  }
-
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
-  }
-
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
+  public static FeedbackSensor fromId(int id) {
+    switch (id) {
+      case 1:
+        return kPrimaryEncoder;
+      case 2:
+        return kAnalogSensor;
+      case 3:
+        return kAlternateOrExternalEncoder;
+      case 4:
+        return kAbsoluteEncoder;
+      default:
+        return kNoSensor;
+    }
   }
 }

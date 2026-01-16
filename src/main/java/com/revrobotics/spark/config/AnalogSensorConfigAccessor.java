@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,16 +38,16 @@ public class AnalogSensorConfigAccessor {
   }
 
   public boolean getInverted() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameter.kAnalogInverted.value);
+    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kAnalogInverted.value);
   }
 
   public double getPositionConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kAnalogRevPerVolt.value);
+        sparkHandle, SparkParameters.kAnalogPositionConversion.value);
   }
 
   public double getVelocityConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kAnalogRotationsPerVoltSec.value);
+        sparkHandle, SparkParameters.kAnalogVelocityConversion.value);
   }
 }

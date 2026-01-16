@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,22 +30,22 @@ package com.revrobotics.spark.config;
 
 import com.revrobotics.jni.CANSparkJNI;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.FeedbackSensor;
 
 public class ClosedLoopConfigAccessor {
   /**
    * Accessor for parameters relating to the MAXMotion. To configure these values, use {@link
    * MAXMotionConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}
    */
   public final MAXMotionConfigAccessor maxMotion;
 
   /**
-   * Accessor for parameters relating to the Software Limits. To configure these values, use {@link
-   * SmartMotionConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}
+   * Accessor for parameters relating to FeedForward. To configure these values, use {@link
+   * FeedForwardConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}
    */
-  public final SmartMotionConfigAccessor smartMotion;
+  public final FeedForwardConfigAccessor feedForward;
 
   private final long sparkHandle;
 
@@ -53,7 +53,7 @@ public class ClosedLoopConfigAccessor {
     this.sparkHandle = sparkHandle;
 
     maxMotion = new MAXMotionConfigAccessor(sparkHandle);
-    smartMotion = new SmartMotionConfigAccessor(sparkHandle);
+    feedForward = new FeedForwardConfigAccessor(sparkHandle);
   }
 
   public double getP() {
@@ -68,6 +68,10 @@ public class ClosedLoopConfigAccessor {
     return getD(ClosedLoopSlot.kSlot0);
   }
 
+  /**
+   * @deprecated Use {@link FeedForwardConfigAccessor#getkV()} to get this gain
+   */
+  @Deprecated(forRemoval = true)
   public double getFF() {
     return getFF(ClosedLoopSlot.kSlot0);
   }
@@ -90,42 +94,46 @@ public class ClosedLoopConfigAccessor {
 
   public double getP(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kP_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kP_0.value + slot.value * 8);
   }
 
   public double getI(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kI_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kI_0.value + slot.value * 8);
   }
 
   public double getD(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kD_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kD_0.value + slot.value * 8);
   }
 
+  /**
+   * @deprecated Use {@link FeedForwardConfigAccessor#getkV(ClosedLoopSlot slot)} to get this gain
+   */
+  @Deprecated(forRemoval = true)
   public double getFF(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kF_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kV_0.value + slot.value * 8);
   }
 
   public double getDFilter(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kDFilter_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kDFilter_0.value + slot.value * 8);
   }
 
   public double getIZone(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kIZone_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kIZone_0.value + slot.value * 8);
   }
 
   public double getMinOutput(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kOutputMin_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kOutputMin_0.value + slot.value * 8);
   }
 
   public double getMaxOutput(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kOutputMax_0.value + slot.value * 8);
+        sparkHandle, SparkParameters.kOutputMax_0.value + slot.value * 8);
   }
 
   public double getMaxIAccumulation() {
@@ -134,29 +142,34 @@ public class ClosedLoopConfigAccessor {
 
   public double getMaxIAccumulation(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kIMaxAccum_0.value + slot.value * 4);
+        sparkHandle, SparkParameters.kIMaxAccum_0.value + slot.value * 4);
+  }
+
+  public double getAllowedClosedLoopError(ClosedLoopSlot slot) {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kAllowedClosedLoopError_0.value + slot.value * 4);
   }
 
   public boolean getPositionWrappingEnabled() {
     return CANSparkJNI.c_Spark_GetParameterBool(
-        sparkHandle, SparkParameter.kPositionPIDWrapEnable.value);
+        sparkHandle, SparkParameters.kPositionPIDWrapEnable.value);
   }
 
   public double getPositionWrappingMinInput() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kPositionPIDMinInput.value);
+        sparkHandle, SparkParameters.kPositionPIDMinInput.value);
   }
 
   public double getPositionWrappingMaxInput() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kPositionPIDMaxInput.value);
+        sparkHandle, SparkParameters.kPositionPIDMaxInput.value);
   }
 
-  public ClosedLoopConfig.FeedbackSensor getFeedbackSensor() {
+  public FeedbackSensor getFeedbackSensor() {
     int value =
         CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kClosedLoopControlSensor.value);
+            sparkHandle, SparkParameters.kClosedLoopControlSensor.value);
 
-    return ClosedLoopConfig.FeedbackSensor.fromId(value);
+    return FeedbackSensor.fromId(value);
   }
 }

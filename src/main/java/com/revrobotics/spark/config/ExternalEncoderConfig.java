@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,6 +31,20 @@ package com.revrobotics.spark.config;
 import com.revrobotics.config.BaseConfig;
 
 public class ExternalEncoderConfig extends BaseConfig {
+  public static class Presets {
+    /** REV Robotics - Through Bore Encoder */
+    public static final ExternalEncoderConfig REV_ThroughBoreEncoder =
+        new ExternalEncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - Through Bore Encoder V2 */
+    public static final ExternalEncoderConfig REV_ThroughBoreEncoderV2 =
+        new ExternalEncoderConfig().countsPerRevolution(8192);
+
+    /** REV Robotics - MAXSpline Encoder (via 6-pin JST) */
+    public static final ExternalEncoderConfig REV_SplineEncoder =
+        new ExternalEncoderConfig().countsPerRevolution(8192);
+  }
+
   public enum Type {
     kQuadrature(0);
 
@@ -72,7 +86,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig countsPerRevolution(int cpr) {
-    putParameter(SparkParameter.kAltEncoderCountsPerRev.value, cpr);
+    putParameter(SparkParameters.kAltEncoderCountsPerRev.value, cpr);
     return this;
   }
 
@@ -83,7 +97,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig inverted(boolean inverted) {
-    putParameter(SparkParameter.kAltEncoderInverted.value, inverted);
+    putParameter(SparkParameters.kAltEncoderInverted.value, inverted);
     return this;
   }
 
@@ -95,7 +109,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig positionConversionFactor(double factor) {
-    putParameter(SparkParameter.kAltEncodePositionFactor.value, (float) factor);
+    putParameter(SparkParameters.kAltEncoderPositionConversion.value, (float) factor);
     return this;
   }
 
@@ -107,7 +121,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig velocityConversionFactor(double factor) {
-    putParameter(SparkParameter.kAltEncoderVelocityFactor.value, (float) factor);
+    putParameter(SparkParameters.kAltEncoderVelocityConversion.value, (float) factor);
     return this;
   }
 
@@ -120,7 +134,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig averageDepth(int depth) {
-    putParameter(SparkParameter.kAltEncoderAverageDepth.value, depth);
+    putParameter(SparkParameters.kAltEncoderAverageDepth.value, depth);
     return this;
   }
 
@@ -135,7 +149,7 @@ public class ExternalEncoderConfig extends BaseConfig {
    * @return The modified {@link ExternalEncoderConfig} object for method chaining
    */
   public ExternalEncoderConfig measurementPeriod(int periodMs) {
-    putParameter(SparkParameter.kAltEncoderSampleDelta.value, periodMs);
+    putParameter(SparkParameters.kAltEncoderSampleDelta.value, periodMs);
     return this;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,7 +29,6 @@
 package com.revrobotics.spark.config;
 
 import com.revrobotics.jni.CANSparkJNI;
-import com.revrobotics.spark.SparkBase;
 
 public class SparkBaseConfigAccessor {
   private final long sparkHandle;
@@ -37,8 +36,8 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the absolute encoder. To configure these values, use {@link
    * AbsoluteEncoderConfig} and call {@link
-   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode,
-   * SparkBase.PersistMode)}.
+   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -48,7 +47,7 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the analog sensor. To configure these values, use {@link
    * AnalogSensorConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -58,7 +57,7 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the primary encoder. To configure these values, use {@link
    * EncoderConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -68,8 +67,8 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the hardware limit switches. To configure these values, use
    * {@link LimitSwitchConfig} and call {@link
-   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode,
-   * SparkBase.PersistMode)}.
+   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -79,8 +78,8 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the closed loop controller. To configure these values, use
    * {@link ClosedLoopConfig} and call {@link
-   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, SparkBase.ResetMode,
-   * SparkBase.PersistMode)}.
+   * com.revrobotics.spark.SparkBase#configure(SparkBaseConfig, com.revrobotics.ResetMode,
+   * com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -90,7 +89,7 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the Software Limits. To configure these values, use {@link
    * SoftLimitConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -100,7 +99,7 @@ public class SparkBaseConfigAccessor {
   /**
    * Accessor for parameters relating to the Status Signals. To configure these values, use {@link
    * SignalsConfig} and call {@link com.revrobotics.spark.SparkBase#configure(SparkBaseConfig,
-   * SparkBase.ResetMode, SparkBase.PersistMode)}.
+   * com.revrobotics.ResetMode, com.revrobotics.PersistMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -120,42 +119,49 @@ public class SparkBaseConfigAccessor {
   }
 
   public SparkBaseConfig.IdleMode getIdleMode() {
-    int value = CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameter.kIdleMode.value);
+    int value =
+        CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameters.kIdleMode.value);
 
     return SparkBaseConfig.IdleMode.fromId(value);
   }
 
   public boolean getInverted() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameter.kInverted.value);
+    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kInverted.value);
   }
 
   public int getSmartCurrentLimit() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kSmartCurrentStallLimit.value);
+        sparkHandle, SparkParameters.kSmartCurrentStallLimit.value);
   }
 
   public int getSmartCurrentFreeLimit() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kSmartCurrentFreeLimit.value);
+        sparkHandle, SparkParameters.kSmartCurrentFreeLimit.value);
   }
 
   public int getSmartCurrentRPMLimit() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kSmartCurrentConfig.value);
+        sparkHandle, SparkParameters.kSmartCurrentConfig.value);
   }
 
   public double getSecondaryCurrentLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(sparkHandle, SparkParameter.kCurrentChop.value);
+    return CANSparkJNI.c_Spark_GetParameterFloat32(sparkHandle, SparkParameters.kCurrentChop.value);
   }
 
   public int getSecondaryCurrentLimitChopCycles() {
     return CANSparkJNI.c_Spark_GetParameterInt32(
-        sparkHandle, SparkParameter.kCurrentChopCycles.value);
+        sparkHandle, SparkParameters.kCurrentChopCycles.value);
+  }
+
+  public double getAdvanceCommutation() {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kCommutationAdvance.value);
   }
 
   public double getOpenLoopRampRate() {
     double value =
-        CANSparkJNI.c_Spark_GetParameterFloat32(sparkHandle, SparkParameter.kRampRate.value);
+        CANSparkJNI.c_Spark_GetParameterFloat32(
+            sparkHandle, SparkParameters.kOpenLoopRampRate.value);
 
     if (value == 0.0) {
       return value;
@@ -167,7 +173,7 @@ public class SparkBaseConfigAccessor {
   public double getClosedLoopRampRate() {
     double value =
         CANSparkJNI.c_Spark_GetParameterFloat32(
-            sparkHandle, SparkParameter.kClosedLoopRampRate.value);
+            sparkHandle, SparkParameters.kClosedLoopRampRate.value);
 
     if (value == 0.0) {
       return value;
@@ -178,22 +184,22 @@ public class SparkBaseConfigAccessor {
 
   public double getVoltageCompensation() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kCompensatedNominalVoltage.value);
+        sparkHandle, SparkParameters.kCompensatedNominalVoltage.value);
   }
 
   public boolean getVoltageCompensationEnabled() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kVoltageCompMode.value)
+            sparkHandle, SparkParameters.kVoltageCompensationMode.value)
         != 0;
   }
 
   public int getFollowerModeLeaderId() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kFollowerModeLeaderId.value);
+        sparkHandle, SparkParameters.kFollowerModeLeaderId.value);
   }
 
   public boolean getFollowerModeInverted() {
     return CANSparkJNI.c_Spark_GetParameterBool(
-        sparkHandle, SparkParameter.kFollowerModeIsInverted.value);
+        sparkHandle, SparkParameters.kFollowerModeIsInverted.value);
   }
 }

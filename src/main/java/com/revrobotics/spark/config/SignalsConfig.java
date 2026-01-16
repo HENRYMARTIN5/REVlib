@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -49,17 +49,17 @@ public class SignalsConfig extends BaseConfig {
 
   private void setAlwaysOnCore(int parameterId, boolean enabled) {
     // Ignore status 0
-    if (parameterId == SparkParameter.kForceEnableStatus0.value) {
+    if (parameterId == SparkParameters.kForceEnableStatus_0.value) {
       return;
     }
 
     Object value = getParameter(parameterId);
 
     if (value == null) {
-      putParameter(parameterId, enabled ? 1 : 0);
+      putParameter(parameterId, enabled);
     } else {
-      int currentValue = (int) value;
-      putParameter(parameterId, (currentValue == 1 || enabled) ? 1 : 0);
+      boolean currentValue = (boolean) value;
+      putParameter(parameterId, currentValue || enabled);
     }
   }
 
@@ -93,7 +93,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig appliedOutputPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus0Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus0Period.value, periodMs);
     return this;
   }
 
@@ -115,7 +115,7 @@ public class SignalsConfig extends BaseConfig {
    */
   @Deprecated
   public SignalsConfig appliedOutputAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus0.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_0.value, enabled);
     return this;
   }
 
@@ -135,7 +135,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig busVoltagePeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus0Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus0Period.value, periodMs);
     return this;
   }
 
@@ -157,7 +157,7 @@ public class SignalsConfig extends BaseConfig {
    */
   @Deprecated
   public SignalsConfig busVoltageAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus0.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_0.value, enabled);
     return this;
   }
 
@@ -177,7 +177,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig outputCurrentPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus0Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus0Period.value, periodMs);
     return this;
   }
 
@@ -199,7 +199,7 @@ public class SignalsConfig extends BaseConfig {
    */
   @Deprecated
   public SignalsConfig outputCurrentAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus0.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_0.value, enabled);
     return this;
   }
 
@@ -219,7 +219,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig motorTemperaturePeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus0Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus0Period.value, periodMs);
     return this;
   }
 
@@ -241,7 +241,7 @@ public class SignalsConfig extends BaseConfig {
    */
   @Deprecated
   public SignalsConfig motorTemperatureAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus0.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_0.value, enabled);
     return this;
   }
 
@@ -261,7 +261,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig limitsPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus0Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus0Period.value, periodMs);
     return this;
   }
 
@@ -283,7 +283,7 @@ public class SignalsConfig extends BaseConfig {
    */
   @Deprecated
   public SignalsConfig limitsAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus0.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_0.value, enabled);
     return this;
   }
 
@@ -300,7 +300,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig faultsPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus1Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus1Period.value, periodMs);
     return this;
   }
 
@@ -321,7 +321,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig faultsAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus1.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_1.value, enabled);
     return this;
   }
 
@@ -338,7 +338,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig warningsPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus1Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus1Period.value, periodMs);
     return this;
   }
 
@@ -359,7 +359,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig warningsAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus1.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_1.value, enabled);
     return this;
   }
 
@@ -375,7 +375,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig primaryEncoderVelocityPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus2Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus2Period.value, periodMs);
     return this;
   }
 
@@ -395,7 +395,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig primaryEncoderVelocityAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus2.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_2.value, enabled);
     return this;
   }
 
@@ -411,7 +411,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig primaryEncoderPositionPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus2Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus2Period.value, periodMs);
     return this;
   }
 
@@ -431,7 +431,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig primaryEncoderPositionAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus2.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_2.value, enabled);
     return this;
   }
 
@@ -447,7 +447,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogVoltagePeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus3Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus3Period.value, periodMs);
     return this;
   }
 
@@ -467,7 +467,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogVoltageAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus3.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_3.value, enabled);
     return this;
   }
 
@@ -483,7 +483,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogVelocityPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus3Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus3Period.value, periodMs);
     return this;
   }
 
@@ -503,7 +503,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogVelocityAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus3.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_3.value, enabled);
     return this;
   }
 
@@ -519,7 +519,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogPositionPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus3Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus3Period.value, periodMs);
     return this;
   }
 
@@ -539,7 +539,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig analogPositionAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus3.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_3.value, enabled);
     return this;
   }
 
@@ -557,7 +557,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig externalOrAltEncoderVelocity(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus4Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus4Period.value, periodMs);
     return this;
   }
 
@@ -580,7 +580,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig externalOrAltEncoderVelocityAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus4.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_4.value, enabled);
     return this;
   }
 
@@ -598,7 +598,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig externalOrAltEncoderPosition(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus4Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus4Period.value, periodMs);
     return this;
   }
 
@@ -621,7 +621,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig externalOrAltEncoderPositionAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus4.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_4.value, enabled);
     return this;
   }
 
@@ -637,7 +637,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig absoluteEncoderVelocityPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus5Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus5Period.value, periodMs);
     return this;
   }
 
@@ -657,7 +657,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig absoluteEncoderVelocityAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus5.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_5.value, enabled);
     return this;
   }
 
@@ -673,7 +673,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig absoluteEncoderPositionPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus5Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus5Period.value, periodMs);
     return this;
   }
 
@@ -693,7 +693,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig absoluteEncoderPositionAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus5.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_5.value, enabled);
     return this;
   }
 
@@ -709,7 +709,7 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig iAccumulationPeriodMs(int periodMs) {
-    setPeriodMsCore(SparkParameter.kStatus7Period.value, periodMs);
+    setPeriodMsCore(SparkParameters.kStatus7Period.value, periodMs);
     return this;
   }
 
@@ -730,7 +730,192 @@ public class SignalsConfig extends BaseConfig {
    * @return The modified {@link SignalsConfig} object for method chaining
    */
   public SignalsConfig iAccumulationAlwaysOn(boolean enabled) {
-    setAlwaysOnCore(SparkParameter.kForceEnableStatus7.value, enabled);
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_7.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getSetpoint()
+   * SparkClosedLoopController.getSetpoint()}. The default period is 20ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig setpointPeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus8Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getSetpoint()
+   * SparkClosedLoopController.getSetpoint()}.
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig setSetpointAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_8.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#isAtSetpoint()
+   * SparkClosedLoopController.isAtSetpoint()}. The default period is 20ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig isAtSetpointPeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus8Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#isAtSetpoint()
+   * SparkClosedLoopController.isAtSetpoint()}.
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig isAtSetpointAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_8.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getSelectedSlot()
+   * SparkClosedLoopController.getSelectedSlot()}. The default period is 20ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig selectedSlotPeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus8Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getSelectedSlot()
+   * SparkClosedLoopController.getSelectedSlot()}.
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig selectedSlotAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_8.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getMAXMotionSetpointPosition()
+   * SparkClosedLoopController.getMAXMotionSetpointPosition()}. The default period is 100ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig maxMotionSetpointPositionPeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus9Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getMAXMotionSetpointPosition()
+   * SparkClosedLoopController.getMAXMotionSetpointPosition()}
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig maxMotionSetpointPositionAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_9.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getMAXMotionSetpointVelocity()
+   * SparkClosedLoopController.getMAXMotionSetpointVelocity()}. The default period is 100ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig maxMotionSetpointVelocityPeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus9Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal returned by {@link
+   * com.revrobotics.spark.SparkClosedLoopController#getMAXMotionSetpointVelocity()
+   * SparkClosedLoopController.getMAXMotionSetpointVelocity()}
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig maxMotionSetpointVelocityAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_9.value, enabled);
     return this;
   }
 }

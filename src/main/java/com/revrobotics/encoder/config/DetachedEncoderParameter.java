@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2025-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,32 +26,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.revrobotics.spark.config;
+/*
+ * This file is auto-generated. Do NOT modify it directly.
+ * See https://github.com/REVrobotics/SparkParameters
+ */
 
-import com.revrobotics.jni.CANSparkJNI;
+package com.revrobotics.encoder.config;
 
-public class SoftLimitConfigAccessor {
-  private final long sparkHandle;
+public enum DetachedEncoderParameter {
+  kEncoderAverageDepth(0),
+  kEncoderInverted(1),
+  kPositionConversionFactor(2),
+  kVelocityConversionFactor(3),
+  kDutyCycleZeroCentered(4),
+  kDutyCycleAverageDepth(5),
+  kDutyCycleOffset(6),
+  kStatus0Period(7),
+  kStatus1Period(8),
+  kStatus2Period(9),
+  kStatus3Period(10),
+  kStatus4Period(11),
+  kAngleConversionFactor(12);
 
-  protected SoftLimitConfigAccessor(long sparkHandle) {
-    this.sparkHandle = sparkHandle;
+  @SuppressWarnings("MemberName")
+  public final int index;
+
+  DetachedEncoderParameter(int index) {
+    this.index = index;
   }
 
-  public boolean getForwardSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitFwdEn.value);
-  }
-
-  public double getForwardSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitForward.value);
-  }
-
-  public boolean getReverseSoftLimitEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameters.kSoftLimitRevEn.value);
-  }
-
-  public double getReverseSoftLimit() {
-    return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameters.kSoftLimitReverse.value);
+  public int getIndex() {
+    return index;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,41 +38,75 @@ public class MAXMotionConfigAccessor {
     this.sparkHandle = sparkHandle;
   }
 
+  /**
+   * @deprecated Use {@link #getCruiseVelocity()} instead.
+   */
+  @Deprecated(forRemoval = true)
   public double getMaxVelocity() {
-    return getMaxVelocity(ClosedLoopSlot.kSlot0);
+    return getCruiseVelocity(ClosedLoopSlot.kSlot0);
+  }
+
+  public double getCruiseVelocity() {
+    return getCruiseVelocity(ClosedLoopSlot.kSlot0);
   }
 
   public double getMaxAcceleration() {
     return getMaxAcceleration(ClosedLoopSlot.kSlot0);
   }
 
+  /**
+   * @deprecated Use {@link #getAllowedProfileError()} instead.
+   */
+  @Deprecated(forRemoval = true)
   public double getAllowedClosedLoopError() {
-    return getAllowedClosedLoopError(ClosedLoopSlot.kSlot0);
+    return getAllowedProfileError(ClosedLoopSlot.kSlot0);
+  }
+
+  public double getAllowedProfileError() {
+    return getAllowedProfileError(ClosedLoopSlot.kSlot0);
   }
 
   public MAXMotionConfig.MAXMotionPositionMode getPositionMode() {
     return getPositionMode(ClosedLoopSlot.kSlot0);
   }
 
+  /**
+   * @deprecated Use {@link #getCruiseVelocity(ClosedLoopSlot)} instead.
+   */
+  @Deprecated(forRemoval = true)
   public double getMaxVelocity(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kMAXMotionMaxVelocity_0.value + slot.value * 5);
+        sparkHandle, SparkParameters.kMAXMotionCruiseVelocity_0.value + slot.value * 5);
+  }
+
+  public double getCruiseVelocity(ClosedLoopSlot slot) {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kMAXMotionCruiseVelocity_0.value + slot.value * 5);
   }
 
   public double getMaxAcceleration(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kMAXMotionMaxAccel_0.value + slot.value * 5);
+        sparkHandle, SparkParameters.kMAXMotionMaxAccel_0.value + slot.value * 5);
   }
 
+  /**
+   * @deprecated Use {@link #getAllowedProfileError(ClosedLoopSlot)} instead.
+   */
+  @Deprecated(forRemoval = true)
   public double getAllowedClosedLoopError(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kMAXMotionAllowedClosedLoopError_0.value + slot.value * 5);
+        sparkHandle, SparkParameters.kMAXMotionAllowedProfileError_0.value + slot.value * 5);
+  }
+
+  public double getAllowedProfileError(ClosedLoopSlot slot) {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kMAXMotionAllowedProfileError_0.value + slot.value * 5);
   }
 
   public MAXMotionConfig.MAXMotionPositionMode getPositionMode(ClosedLoopSlot slot) {
     int value =
         CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kMAXMotionPositionMode_0.value + slot.value * 5);
+            sparkHandle, SparkParameters.kMAXMotionPositionMode_0.value + slot.value * 5);
 
     return MAXMotionConfig.MAXMotionPositionMode.fromInt(value);
   }

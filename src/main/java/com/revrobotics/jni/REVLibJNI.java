@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,4 +30,8 @@ package com.revrobotics.jni;
 
 public class REVLibJNI extends RevJNIWrapper {
   public static native String c_REVLib_ErrorFromCode(int errorCode);
+
+  public static native void c_REVLib_SetBaseDefaultCanTimeoutMs(int timeout_ms);
+
+  public static native void c_REVLib_SetBaseDefaultCanRetries(int retries);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,6 +32,20 @@ import com.revrobotics.config.BaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig.DataPortConfig;
 
 public class AbsoluteEncoderConfig extends BaseConfig {
+  public static class Presets {
+    /** REV Robotics - Through Bore Encoder */
+    public static final AbsoluteEncoderConfig REV_ThroughBoreEncoder =
+        new AbsoluteEncoderConfig().startPulseUs(1.0).endPulseUs(1.0);
+
+    /** REV Robotics - Through Bore Encoder V2 */
+    public static final AbsoluteEncoderConfig REV_ThroughBoreEncoderV2 =
+        new AbsoluteEncoderConfig().startPulseUs(3.88443797).endPulseUs(1.94221899);
+
+    /** REV Robotics - MAXSpline Encoder (via 6-pin JST) */
+    public static final AbsoluteEncoderConfig REV_SplineEncoder =
+        new AbsoluteEncoderConfig().startPulseUs(1.0).endPulseUs(1.0);
+  }
+
   /** Create a new object to configure an AbsoluteEncoder. */
   public AbsoluteEncoderConfig() {
     super(CANType.kSpark);
@@ -65,7 +79,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig setSparkMaxDataPortConfig() {
     putParameter(
-        SparkParameter.kDataPortConfig.value,
+        SparkParameters.kCompatibilityPortConfig.value,
         DataPortConfig.kLimitSwitchesAndAbsoluteEncoder.value);
     return this;
   }
@@ -80,7 +94,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig inverted(boolean inverted) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleInverted.value, inverted);
+    putParameter(SparkParameters.kDutyCycleInverted.value, inverted);
     return this;
   }
 
@@ -93,7 +107,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig positionConversionFactor(double factor) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCyclePositionFactor.value, (float) factor);
+    putParameter(SparkParameters.kDutyCyclePositionFactor.value, (float) factor);
     return this;
   }
 
@@ -106,7 +120,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig velocityConversionFactor(double factor) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleVelocityFactor.value, (float) factor);
+    putParameter(SparkParameters.kDutyCycleVelocityFactor.value, (float) factor);
     return this;
   }
 
@@ -122,7 +136,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig zeroOffset(double offset) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleOffset.value, (float) offset);
+    putParameter(SparkParameters.kDutyCycleOffset.value, (float) offset);
     return this;
   }
 
@@ -162,7 +176,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
         depthIndex = 7;
     }
 
-    putParameter(SparkParameter.kDutyCycleAverageDepth.value, depthIndex);
+    putParameter(SparkParameters.kDutyCycleAverageDepth.value, depthIndex);
     return this;
   }
 
@@ -175,7 +189,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig startPulseUs(double startPulseUs) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleEncoderStartPulseUs.value, (float) startPulseUs);
+    putParameter(SparkParameters.kDutyCycleEncoderStartPulseUs.value, (float) startPulseUs);
     return this;
   }
 
@@ -188,7 +202,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig endPulseUs(double endPulseUs) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleEncoderEndPulseUs.value, (float) endPulseUs);
+    putParameter(SparkParameters.kDutyCycleEncoderEndPulseUs.value, (float) endPulseUs);
     return this;
   }
 
@@ -202,7 +216,7 @@ public class AbsoluteEncoderConfig extends BaseConfig {
    */
   public AbsoluteEncoderConfig zeroCentered(boolean zeroCentered) {
     setSparkMaxDataPortConfig();
-    putParameter(SparkParameter.kDutyCycleZeroCentered.value, zeroCentered);
+    putParameter(SparkParameters.kDutyCycleZeroCentered.value, zeroCentered);
     return this;
   }
 }

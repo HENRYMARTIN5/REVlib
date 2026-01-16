@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,11 +28,15 @@
 
 package com.revrobotics.servohub;
 
+import com.revrobotics.NativeResourceCleaner;
+import com.revrobotics.REVDevice;
 import com.revrobotics.REVLibError;
 import com.revrobotics.jni.CANServoHubJNI;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.jspecify.annotations.Nullable;
 
-public abstract class ServoHubLowLevel {
+public abstract class ServoHubLowLevel extends NativeResourceCleaner
+    implements REVDevice, AutoCloseable {
   protected final long servoHubHandle;
   private final AtomicBoolean isClosed = new AtomicBoolean(false);
   private final int deviceId;
@@ -51,15 +55,23 @@ public abstract class ServoHubLowLevel {
           "A CANServoHub instance has already been created with this device ID: " + deviceId);
     }
     servoHubHandle = CANServoHubJNI.c_ServoHub_Create(deviceId);
+    registerCleaner(servoHubHandle);
   }
 
   /** Closes the ServoHub Controller */
+  @Override
   public void close() {
-    boolean alreadyClosed = isClosed.getAndSet(true);
-    if (alreadyClosed) {
+    boolean wasClosed = isClosed.getAndSet(true);
+    if (wasClosed) {
       return;
     }
-    CANServoHubJNI.c_ServoHub_Destroy(servoHubHandle);
+
+    CANServoHubJNI.c_ServoHub_Close(servoHubHandle);
+  }
+
+  @Override
+  protected OnClean getCleanAction() {
+    return CANServoHubJNI::c_ServoHub_Destroy;
   }
 
   /**
@@ -73,11 +85,31 @@ public abstract class ServoHubLowLevel {
   }
 
   public class FirmwareVersion {
-    int firmwareFix;
-    int firmwareMinor;
-    int firmwareYear;
-    int hardwareMinor;
-    int hardwareMajor;
+    private int firmwareFix;
+    private int firmwareMinor;
+    private int firmwareYear;
+    private int hardwareMinor;
+    private int hardwareMajor;
+
+    public int getYear() {
+      return firmwareYear;
+    }
+
+    public int getMinor() {
+      return firmwareMinor;
+    }
+
+    public int getFix() {
+      return firmwareFix;
+    }
+
+    public int hardwareMajor() {
+      return hardwareMajor;
+    }
+
+    public int hardwareMinor() {
+      return hardwareMinor;
+    }
   }
 
   /**
@@ -192,12 +224,18 @@ public abstract class ServoHubLowLevel {
     public boolean primaryHeartbeatLock;
     public boolean systemEnabled;
     public int communicationMode; // 0: None, 1: CAN, 2: RS-485
+    public boolean programmingEnabled;
+    public boolean activelyProgramming;
   }
 
+  @Nullable
   public PeriodicStatus0 getPeriodicStatus0() {
     throwIfClosed();
     PeriodicStatus0 status0 = new PeriodicStatus0();
-    CANServoHubJNI.c_ServoHub_GetPeriodStatus0(servoHubHandle, status0);
+    boolean success = CANServoHubJNI.c_ServoHub_GetPeriodStatus0(servoHubHandle, status0);
+    if (!success) {
+      return null;
+    }
     return status0;
   }
 
@@ -230,10 +268,14 @@ public abstract class ServoHubLowLevel {
     public boolean stickyChannel5Overcurrent;
   }
 
+  @Nullable
   public PeriodicStatus1 getPeriodicStatus1() {
     throwIfClosed();
     PeriodicStatus1 status1 = new PeriodicStatus1();
-    CANServoHubJNI.c_ServoHub_GetPeriodStatus1(servoHubHandle, status1);
+    boolean success = CANServoHubJNI.c_ServoHub_GetPeriodStatus1(servoHubHandle, status1);
+    if (!success) {
+      return null;
+    }
     return status1;
   }
 
@@ -249,10 +291,14 @@ public abstract class ServoHubLowLevel {
     public boolean channel2OutOfRange;
   }
 
+  @Nullable
   public PeriodicStatus2 getPeriodicStatus2() {
     throwIfClosed();
     PeriodicStatus2 status2 = new PeriodicStatus2();
-    CANServoHubJNI.c_ServoHub_GetPeriodStatus2(servoHubHandle, status2);
+    boolean success = CANServoHubJNI.c_ServoHub_GetPeriodStatus2(servoHubHandle, status2);
+    if (!success) {
+      return null;
+    }
     return status2;
   }
 
@@ -268,10 +314,14 @@ public abstract class ServoHubLowLevel {
     public boolean channel5OutOfRange;
   }
 
+  @Nullable
   public PeriodicStatus3 getPeriodicStatus3() {
     throwIfClosed();
     PeriodicStatus3 status3 = new PeriodicStatus3();
-    CANServoHubJNI.c_ServoHub_GetPeriodStatus3(servoHubHandle, status3);
+    boolean success = CANServoHubJNI.c_ServoHub_GetPeriodStatus3(servoHubHandle, status3);
+    if (!success) {
+      return null;
+    }
     return status3;
   }
 
@@ -284,10 +334,14 @@ public abstract class ServoHubLowLevel {
     public double channel5Current;
   }
 
+  @Nullable
   public PeriodicStatus4 getPeriodicStatus4() {
     throwIfClosed();
     PeriodicStatus4 status4 = new PeriodicStatus4();
-    CANServoHubJNI.c_ServoHub_GetPeriodStatus4(servoHubHandle, status4);
+    boolean success = CANServoHubJNI.c_ServoHub_GetPeriodStatus4(servoHubHandle, status4);
+    if (!success) {
+      return null;
+    }
     return status4;
   }
 

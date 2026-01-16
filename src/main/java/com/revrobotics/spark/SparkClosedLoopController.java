@@ -34,6 +34,7 @@ import com.revrobotics.jni.CANSparkJNI;
 /** Get an instance of this class by using {@link SparkBase#getClosedLoopController()}. */
 public class SparkClosedLoopController {
   private final SparkBase spark;
+  private SparkBase.ControlType controlType;
 
   public enum ArbFFUnits {
     kVoltage(0),
@@ -61,15 +62,16 @@ public class SparkClosedLoopController {
   // package-private (can only be used by other classes in this package)
   SparkClosedLoopController(SparkBase device) {
     spark = device;
+    controlType = SparkBase.ControlType.kDutyCycle; // Default control type
   }
 
   /**
-   * Set the controller reference value based on the selected control mode.
+   * Set the controller setpoint based on the selected control mode.
    *
-   * @param value The value to set depending on the control mode. For basic duty cycle control this
-   *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
-   *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using {@link
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
    *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
    *     {@link
    *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
@@ -82,19 +84,20 @@ public class SparkClosedLoopController {
    * @param ctrl the control type
    * @return {@link REVLibError#kOk} if successful
    */
-  public REVLibError setReference(double value, SparkBase.ControlType ctrl) {
+  public REVLibError setSetpoint(double setpoint, SparkBase.ControlType ctrl) {
     spark.throwIfClosed();
-    return setReference(value, ctrl, ClosedLoopSlot.kSlot0);
+    controlType = ctrl;
+    return setSetpoint(setpoint, ctrl, ClosedLoopSlot.kSlot0);
   }
 
   /**
-   * Set the controller reference value based on the selected control mode. This will override the
+   * Set the controller setpoint based on the selected control mode. This will override the
    * pre-programmed control mode but not change what is programmed to the controller.
    *
-   * @param value The value to set depending on the control mode. For basic duty cycle control this
-   *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
-   *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using {@link
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
    *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
    *     {@link
    *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
@@ -108,19 +111,19 @@ public class SparkClosedLoopController {
    * @param slot The {@link ClosedLoopSlot} to use
    * @return {@link REVLibError#kOk} if successful
    */
-  public REVLibError setReference(double value, SparkBase.ControlType ctrl, ClosedLoopSlot slot) {
+  public REVLibError setSetpoint(double setpoint, SparkBase.ControlType ctrl, ClosedLoopSlot slot) {
     spark.throwIfClosed();
-    return setReference(value, ctrl, slot, 0);
+    return setSetpoint(setpoint, ctrl, slot, 0);
   }
 
   /**
-   * Set the controller reference value based on the selected control mode. This will override the
+   * Set the controller setpoint based on the selected control mode. This will override the
    * pre-programmed control mode but not change what is programmed to the controller.
    *
-   * @param value The value to set depending on the control mode. For basic duty cycle control this
-   *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
-   *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using {@link
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
    *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
    *     {@link
    *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
@@ -137,20 +140,20 @@ public class SparkClosedLoopController {
    *     is set after the control mode, but before any current limits or ramp rates.
    * @return {@link REVLibError#kOk} if successful
    */
-  public REVLibError setReference(
-      double value, SparkBase.ControlType ctrl, ClosedLoopSlot slot, double arbFeedforward) {
+  public REVLibError setSetpoint(
+      double setpoint, SparkBase.ControlType ctrl, ClosedLoopSlot slot, double arbFeedforward) {
     spark.throwIfClosed();
-    return spark.setpointCommand(value, ctrl, slot.value, arbFeedforward);
+    return spark.setpointCommand(setpoint, ctrl, slot.value, arbFeedforward);
   }
 
   /**
-   * Set the controller reference value based on the selected control mode. This will override the
+   * Set the controller setpoint based on the selected control mode. This will override the
    * pre-programmed control mode but not change what is programmed to the controller.
    *
-   * @param value The value to set depending on the control mode. For basic duty cycle control this
-   *     should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts) Velocity
-   *     Control: Velocity (RPM) Position Control: Position (Rotations) Current Control: Current
-   *     (Amps). Native units can be changed using {@link
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
    *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
    *     {@link
    *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
@@ -168,14 +171,147 @@ public class SparkClosedLoopController {
    * @param arbFFUnits The units the arbitrary feed forward term is in
    * @return {@link REVLibError#kOk} if successful
    */
-  public REVLibError setReference(
-      double value,
+  public REVLibError setSetpoint(
+      double setpoint,
       SparkBase.ControlType ctrl,
       ClosedLoopSlot slot,
       double arbFeedforward,
       ArbFFUnits arbFFUnits) {
     spark.throwIfClosed();
-    return spark.setpointCommand(value, ctrl, slot.value, arbFeedforward, arbFFUnits.value);
+    return spark.setpointCommand(setpoint, ctrl, slot.value, arbFeedforward, arbFFUnits.value);
+  }
+
+  /**
+   * Set the controller setpoint based on the selected control mode.
+   *
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
+   * @param ctrl the control type
+   * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link #setSetpoint(double, SparkBase.ControlType)} instead
+   */
+  @Deprecated(forRemoval = true)
+  public REVLibError setReference(double setpoint, SparkBase.ControlType ctrl) {
+    return setSetpoint(setpoint, ctrl);
+  }
+
+  /**
+   * Set the controller setpoint based on the selected control mode. This will override the
+   * pre-programmed control mode but not change what is programmed to the controller.
+   *
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
+   * @param ctrl Is the control type to override with
+   * @param slot The {@link ClosedLoopSlot} to use
+   * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link #setSetpoint(double, SparkBase.ControlType, ClosedLoopSlot)} instead
+   */
+  @Deprecated(forRemoval = true)
+  public REVLibError setReference(
+      double setpoint, SparkBase.ControlType ctrl, ClosedLoopSlot slot) {
+    return setSetpoint(setpoint, ctrl, slot);
+  }
+
+  /**
+   * Set the controller setpoint based on the selected control mode. This will override the
+   * pre-programmed control mode but not change what is programmed to the controller.
+   *
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
+   * @param ctrl Is the control type to override with
+   * @param slot The {@link ClosedLoopSlot} to use
+   * @param arbFeedforward A value from which is represented in voltage applied to the motor after
+   *     the result of the specified control mode. The units for the parameter is Volts. This value
+   *     is set after the control mode, but before any current limits or ramp rates.
+   * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link #setSetpoint(double, SparkBase.ControlType, ClosedLoopSlot, double)}
+   *     instead
+   */
+  @Deprecated(forRemoval = true)
+  public REVLibError setReference(
+      double setpoint, SparkBase.ControlType ctrl, ClosedLoopSlot slot, double arbFeedforward) {
+    return setSetpoint(setpoint, ctrl, slot, arbFeedforward);
+  }
+
+  /**
+   * Set the controller setpoint based on the selected control mode. This will override the
+   * pre-programmed control mode but not change what is programmed to the controller.
+   *
+   * @param setpoint The setpoint to set depending on the control mode. For basic duty cycle control
+   *     this should be a value between -1 and 1 Otherwise: Voltage Control: Voltage (volts)
+   *     Velocity Control: Velocity (RPM) Position Control: Position (Rotations) Current Control:
+   *     Current (Amps). Native units can be changed using {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#positionConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#positionConversionFactor(double)} or
+   *     {@link
+   *     com.revrobotics.spark.config.AlternateEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link
+   *     com.revrobotics.spark.config.ExternalEncoderConfig#velocityConversionFactor(double)}, or
+   *     {@link com.revrobotics.spark.config.EncoderConfig#velocityConversionFactor(double)}
+   * @param ctrl Is the control type to override with
+   * @param slot The {@link ClosedLoopSlot} to use
+   * @param arbFeedforward A value from which is represented in voltage applied to the motor after
+   *     the result of the specified control mode. The units for the parameter is Volts. This value
+   *     is set after the control mode, but before any current limits or ramp rates.
+   * @param arbFFUnits The units the arbitrary feed forward term is in
+   * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link #setSetpoint(double, SparkBase.ControlType, ClosedLoopSlot, double,
+   *     ArbFFUnits)} instead
+   */
+  @Deprecated(forRemoval = true)
+  public REVLibError setReference(
+      double setpoint,
+      SparkBase.ControlType ctrl,
+      ClosedLoopSlot slot,
+      double arbFeedforward,
+      ArbFFUnits arbFFUnits) {
+    return setSetpoint(setpoint, ctrl, slot, arbFeedforward, arbFFUnits);
+  }
+
+  /**
+   * Get the selected control type used when {@link #setReference(double, SparkBase.ControlType)}
+   * was last called.
+   *
+   * @return The selected control type
+   */
+  public SparkBase.ControlType getControlType() {
+    spark.throwIfClosed();
+    return controlType;
   }
 
   /**
@@ -203,5 +339,61 @@ public class SparkClosedLoopController {
   public double getIAccum() {
     spark.throwIfClosed();
     return CANSparkJNI.c_Spark_GetIAccum(spark.sparkHandle);
+  }
+
+  /**
+   * Get the internal setpoint of the closed loop controller.
+   *
+   * @return The internal setpoint
+   */
+  public double getSetpoint() {
+    spark.throwIfClosed();
+    return CANSparkJNI.c_Spark_GetSetpoint(spark.sparkHandle);
+  }
+
+  /**
+   * Determine if the setpoint has been reached.
+   *
+   * @return true if the setpoint is reached; false otherwise
+   */
+  public boolean isAtSetpoint() {
+    spark.throwIfClosed();
+    return CANSparkJNI.c_Spark_IsAtSetpoint(spark.sparkHandle);
+  }
+
+  /**
+   * Get the selected closed loop PID slot.
+   *
+   * @return The selected closed loop PID slot
+   */
+  public ClosedLoopSlot getSelectedSlot() {
+    spark.throwIfClosed();
+    return ClosedLoopSlot.fromInt(CANSparkJNI.c_Spark_GetSelectedSlot(spark.sparkHandle));
+  }
+
+  /**
+   * Get the MAXMotion internal setpoint position.
+   *
+   * <p>This will be 0 if the controller is not in a MAXMotion control mode.
+   *
+   * @return The MAXMotion internal setpoint position in rotations or units specified by the
+   *     conversion factor.
+   */
+  public double getMAXMotionSetpointPosition() {
+    spark.throwIfClosed();
+    return CANSparkJNI.c_Spark_GetMaxMotionSetpointPosition(spark.sparkHandle);
+  }
+
+  /**
+   * Get the MAXMotion internal setpoint velocity.
+   *
+   * <p>This will be 0 if the controller is not in a MAXMotion control mode.
+   *
+   * @return The MAXMotion internal setpoint velocity in rotations per minute or units specified by
+   *     the conversion factor.
+   */
+  public double getMAXMotionSetpointVelocity() {
+    spark.throwIfClosed();
+    return CANSparkJNI.c_Spark_GetMaxMotionSetpointVelocity(spark.sparkHandle);
   }
 }

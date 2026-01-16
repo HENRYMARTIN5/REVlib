@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,12 +29,17 @@
 package com.revrobotics.servohub;
 
 import com.revrobotics.REVLibError;
+import com.revrobotics.ResetMode;
 import com.revrobotics.jni.CANServoHubJNI;
 import com.revrobotics.jni.REVLibJNI;
 import com.revrobotics.servohub.config.ServoHubConfig;
 import com.revrobotics.servohub.config.ServoHubConfigAccessor;
 
 public class ServoHub extends ServoHubLowLevel {
+  /*
+   * @deprecated Use {@link com.revrobotics.ResetMode} instead.
+   */
+  @Deprecated(since = "2026", forRemoval = true)
   public enum ResetMode {
     kNoResetSafeParameters(0),
     kResetSafeParameters(1);
@@ -52,7 +57,7 @@ public class ServoHub extends ServoHubLowLevel {
   /**
    * Accessor for ServoHub parameter values. This object contains fields and methods to retrieve
    * parameters that have been applied to the device. To set parameters, see {@link ServoHubConfig}
-   * and {@link ServoHub#configure(ServoHubConfig, ServoHub.ResetMode)}.
+   * and {@link ServoHub#configure(ServoHubConfig, com.revrobotics.ResetMode)}.
    *
    * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
    * infrequently.
@@ -76,13 +81,42 @@ public class ServoHub extends ServoHubLowLevel {
   /**
    * Set the configuration for the ServoHub.
    *
+   * <p>If {@code resetMode} is {@link com.revrobotics.ResetMode#kResetSafeParameters}, this method
+   * will reset safe writable parameters to their default values before setting the given
+   * configuration.
+   *
+   * @param config The desired ServoHub configuration
+   * @param resetMode Whether to reset safe parameters before setting the configuration
+   * @return {@link REVLibError#kOk} if successful
+   */
+  public REVLibError configure(ServoHubConfig config, com.revrobotics.ResetMode resetMode) {
+    throwIfClosed();
+    REVLibError status =
+        REVLibError.fromInt(
+            CANServoHubJNI.c_ServoHub_Configure(
+                servoHubHandle,
+                config.flatten(),
+                resetMode == com.revrobotics.ResetMode.kResetSafeParameters));
+
+    if (status != REVLibError.kOk) {
+      throw new IllegalStateException(REVLibJNI.c_REVLib_ErrorFromCode(status.value));
+    }
+
+    return status;
+  }
+
+  /**
+   * Set the configuration for the ServoHub.
+   *
    * <p>If {@code resetMode} is {@link ResetMode#kResetSafeParameters}, this method will reset safe
    * writable parameters to their default values before setting the given configuration.
    *
    * @param config The desired ServoHub configuration
    * @param resetMode Whether to reset safe parameters before setting the configuration
    * @return {@link REVLibError#kOk} if successful
+   * @deprecated Use {@link ServoHub#configure(ServoHubConfig, com.revrobotics.ResetMode)} instead.
    */
+  @Deprecated(since = "2026", forRemoval = true)
   public REVLibError configure(ServoHubConfig config, ResetMode resetMode) {
     throwIfClosed();
     REVLibError status =

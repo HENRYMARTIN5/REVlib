@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,31 +39,31 @@ public class ExternalEncoderConfigAccessor {
 
   public int getCountsPerRevolution() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kAltEncoderCountsPerRev.value);
+        sparkHandle, SparkParameters.kAltEncoderCountsPerRev.value);
   }
 
   public boolean getInverted() {
     return CANSparkJNI.c_Spark_GetParameterBool(
-        sparkHandle, SparkParameter.kAltEncoderInverted.value);
+        sparkHandle, SparkParameters.kAltEncoderInverted.value);
   }
 
   public double getPositionConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kAltEncodePositionFactor.value);
+        sparkHandle, SparkParameters.kAltEncoderPositionConversion.value);
   }
 
   public double getVelocityConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kAltEncoderVelocityFactor.value);
+        sparkHandle, SparkParameters.kAltEncoderVelocityConversion.value);
   }
 
   public int getAverageDepth() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kAltEncoderAverageDepth.value);
+        sparkHandle, SparkParameters.kAltEncoderAverageDepth.value);
   }
 
   public int getMeasurementPeriod() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kAltEncoderSampleDelta.value);
+        sparkHandle, SparkParameters.kAltEncoderSampleDelta.value);
   }
 }

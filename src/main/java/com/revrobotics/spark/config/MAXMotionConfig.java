@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -78,32 +78,62 @@ public class MAXMotionConfig extends BaseConfig {
   }
 
   /**
-   * Set the maximum velocity for the MAXMotion mode of the controller. This is the cruising
-   * velocity of the profile. Natively, the units are in RPM but will be affected by the velocity
-   * conversion factor.
+   * Set the cruise velocity for the MAXMotion mode of the controller. Natively, the units are in
+   * RPM but will be affected by the velocity conversion factor.
    *
    * <p>This will set the value for closed loop slot 0. To set the value for a specific closed loop
-   * slot, use {@link MAXMotionConfig#maxVelocity(double, ClosedLoopSlot)}.
+   * slot, use {@link MAXMotionConfig#cruiseVelocity(double, ClosedLoopSlot)}.
    *
    * @param maxVelocity The maximum velocity with the velocity conversion factor applied
    * @return The modified {@link MAXMotionConfig} object for method chaining
+   * @deprecated Use {@link #cruiseVelocity(double)} instead.
    */
+  @Deprecated(forRemoval = true)
   public MAXMotionConfig maxVelocity(double maxVelocity) {
     return maxVelocity(maxVelocity, ClosedLoopSlot.kSlot0);
   }
 
   /**
-   * Set the maximum velocity for the MAXMotion mode of the controller for a specific closed loop
-   * slot. This is the cruising velocity of the profile. Natively, the units are in RPM but will be
-   * affected by the velocity conversion factor.
+   * Set the cruise velocity for the MAXMotion mode of the controller. Natively, the units are in
+   * RPM but will be affected by the velocity conversion factor.
+   *
+   * <p>This will set the value for closed loop slot 0. To set the value for a specific closed loop
+   * slot, use {@link MAXMotionConfig#cruiseVelocity(double, ClosedLoopSlot)}.
+   *
+   * @param cruiseVelocity The maximum velocity with the velocity conversion factor applied
+   * @return The modified {@link MAXMotionConfig} object for method chaining
+   */
+  public MAXMotionConfig cruiseVelocity(double cruiseVelocity) {
+    return cruiseVelocity(cruiseVelocity, ClosedLoopSlot.kSlot0);
+  }
+
+  /**
+   * Set the cruise velocity for the MAXMotion mode of the controller for a specific closed loop
+   * slot. Natively, the units are in RPM but will be affected by the velocity conversion factor.
    *
    * @param maxVelocity The maximum velocity with the velocity conversion factor applied
    * @param slot The closed loop slot to set the values for
    * @return The modified {@link MAXMotionConfig} object for method chaining
+   * @deprecated Use {@link #cruiseVelocity(double, ClosedLoopSlot)} instead.
    */
+  @Deprecated(forRemoval = true)
   public MAXMotionConfig maxVelocity(double maxVelocity, ClosedLoopSlot slot) {
     putParameter(
-        SparkParameter.kMAXMotionMaxVelocity_0.value + slot.value * 5, (float) maxVelocity);
+        SparkParameters.kMAXMotionCruiseVelocity_0.value + slot.value * 5, (float) maxVelocity);
+    return this;
+  }
+
+  /**
+   * Set the cruise velocity for the MAXMotion mode of the controller for a specific closed loop
+   * slot. Natively, the units are in RPM but will be affected by the velocity conversion factor.
+   *
+   * @param cruiseVelocity The cruise velocity with the velocity conversion factor applied
+   * @param slot The closed loop slot to set the values for
+   * @return The modified {@link MAXMotionConfig} object for method chaining
+   */
+  public MAXMotionConfig cruiseVelocity(double cruiseVelocity, ClosedLoopSlot slot) {
+    putParameter(
+        SparkParameters.kMAXMotionCruiseVelocity_0.value + slot.value * 5, (float) cruiseVelocity);
     return this;
   }
 
@@ -134,39 +164,74 @@ public class MAXMotionConfig extends BaseConfig {
    */
   public MAXMotionConfig maxAcceleration(double maxAcceleration, ClosedLoopSlot slot) {
     putParameter(
-        SparkParameter.kMAXMotionMaxAccel_0.value + slot.value * 5, (float) maxAcceleration);
+        SparkParameters.kMAXMotionMaxAccel_0.value + slot.value * 5, (float) maxAcceleration);
     return this;
   }
 
   /**
-   * Set the allowed closed loop error for the MAXMotion mode of the controller. This value is how
-   * much deviation from the setpoint is tolerated and is useful in preventing oscillation around
-   * the setpoint. Natively, the units are in rotations but will be affected by the position
-   * conversion factor.
+   * Set the allowed profile error for the MAXMotion mode of the controller. This value is how much
+   * deviation from the profile is tolerated before the profile is regenerated. Natively, the units
+   * are in rotations but will be affected by the position conversion factor.
    *
    * <p>This will set the value for closed loop slot 0. To set the value for a specific closed loop
-   * slot, use {@link MAXMotionConfig#allowedClosedLoopError(double, ClosedLoopSlot)}.
+   * slot, use {@link MAXMotionConfig#allowedProfileError(double, ClosedLoopSlot)}.
    *
    * @param allowedError The allowed error with the position conversion factor applied
    * @return The modified {@link MAXMotionConfig} object for method chaining
+   * @deprecated Use {@link #allowedProfileError(double)} instead.
    */
+  @Deprecated(forRemoval = true)
   public MAXMotionConfig allowedClosedLoopError(double allowedError) {
     return allowedClosedLoopError(allowedError, ClosedLoopSlot.kSlot0);
   }
 
   /**
-   * Set the allowed closed loop error for the MAXMotion mode of the controller for a specific PID
-   * slot. This value is how much deviation from the setpoint is tolerated and is useful in
-   * preventing oscillation around the setpoint. Natively, the units are in rotations but will be
-   * affected by the position conversion factor.
+   * Set the allowed profile error for the MAXMotion mode of the controller. This value is how much
+   * deviation from the profile is tolerated before the profile is regenerated. Natively, the units
+   * are in rotations but will be affected by the position conversion factor.
+   *
+   * <p>This will set the value for closed loop slot 0. To set the value for a specific closed loop
+   * slot, use {@link MAXMotionConfig#allowedProfileError(double, ClosedLoopSlot)}.
+   *
+   * @param allowedError The allowed error with the position conversion factor applied
+   * @return The modified {@link MAXMotionConfig} object for method chaining
+   */
+  public MAXMotionConfig allowedProfileError(double allowedError) {
+    return allowedProfileError(allowedError, ClosedLoopSlot.kSlot0);
+  }
+
+  /**
+   * Set the allowed profile error for the MAXMotion mode of the controller for a specific PID slot.
+   * This value is how much deviation from the profile is tolerated before the profile is
+   * regenerated. Natively, the units are in rotations but will be affected by the position
+   * conversion factor.
+   *
+   * @param allowedError The allowed error with the position conversion factor applied
+   * @param slot The closed loop slot to set the values for
+   * @return The modified {@link MAXMotionConfig} object for method chaining
+   * @deprecated Use {@link #allowedProfileError(double, ClosedLoopSlot)} instead.
+   */
+  @Deprecated(forRemoval = true)
+  public MAXMotionConfig allowedClosedLoopError(double allowedError, ClosedLoopSlot slot) {
+    putParameter(
+        SparkParameters.kMAXMotionAllowedProfileError_0.value + slot.value * 5,
+        (float) allowedError);
+    return this;
+  }
+
+  /**
+   * Set the allowed profile error for the MAXMotion mode of the controller for a specific PID slot.
+   * This value is how much deviation from the profile is tolerated before the profile is
+   * regenerated. Natively, the units are in rotations but will be affected by the position
+   * conversion factor.
    *
    * @param allowedError The allowed error with the position conversion factor applied
    * @param slot The closed loop slot to set the values for
    * @return The modified {@link MAXMotionConfig} object for method chaining
    */
-  public MAXMotionConfig allowedClosedLoopError(double allowedError, ClosedLoopSlot slot) {
+  public MAXMotionConfig allowedProfileError(double allowedError, ClosedLoopSlot slot) {
     putParameter(
-        SparkParameter.kMAXMotionAllowedClosedLoopError_0.value + slot.value * 5,
+        SparkParameters.kMAXMotionAllowedProfileError_0.value + slot.value * 5,
         (float) allowedError);
     return this;
   }
@@ -192,7 +257,7 @@ public class MAXMotionConfig extends BaseConfig {
    * @return The modified {@link MAXMotionConfig} object for method chaining
    */
   public MAXMotionConfig positionMode(MAXMotionPositionMode mode, ClosedLoopSlot slot) {
-    putParameter(SparkParameter.kMAXMotionPositionMode_0.value + slot.value * 5, mode.value);
+    putParameter(SparkParameters.kMAXMotionPositionMode_0.value + slot.value * 5, mode.value);
     return this;
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,27 +37,69 @@ public class LimitSwitchConfigAccessor {
     this.sparkHandle = sparkHandle;
   }
 
+  @Deprecated
   public boolean getForwardLimitSwitchEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameter.kHardLimitFwdEn.value);
+    int value =
+        CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameters.kHardLimitFwdEn.value);
+
+    LimitSwitchConfig.Behavior behavior = LimitSwitchConfig.Behavior.fromId(value);
+    return (behavior == LimitSwitchConfig.Behavior.kStopMovingMotor)
+        || (behavior == LimitSwitchConfig.Behavior.kStopMovingMotorAndSetPosition);
+  }
+
+  public LimitSwitchConfig.Behavior getForwardLimitSwitchTriggerBehavior() {
+    int value =
+        CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameters.kHardLimitFwdEn.value);
+
+    return LimitSwitchConfig.Behavior.fromId(value);
   }
 
   public LimitSwitchConfig.Type getForwardSwitchType() {
     boolean value =
         CANSparkJNI.c_Spark_GetParameterBool(
-            sparkHandle, SparkParameter.kLimitSwitchFwdPolarity.value);
+            sparkHandle, SparkParameters.kLimitSwitchFwdPolarity.value);
 
     return value ? LimitSwitchConfig.Type.kNormallyOpen : LimitSwitchConfig.Type.kNormallyClosed;
   }
 
+  public double getForwardLimitSwitchPosition() {
+    float value =
+        CANSparkJNI.c_Spark_GetParameterFloat32(
+            sparkHandle, SparkParameters.kLimitSwitchFwdPosition.value);
+
+    return value;
+  }
+
+  @Deprecated
   public boolean getReverseLimitSwitchEnabled() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameter.kHardLimitRevEn.value);
+    int value =
+        CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameters.kHardLimitRevEn.value);
+
+    LimitSwitchConfig.Behavior behavior = LimitSwitchConfig.Behavior.fromId(value);
+    return (behavior == LimitSwitchConfig.Behavior.kStopMovingMotor)
+        || (behavior == LimitSwitchConfig.Behavior.kStopMovingMotorAndSetPosition);
+  }
+
+  public LimitSwitchConfig.Behavior getReverseLimitSwitchTriggerBehavior() {
+    int value =
+        CANSparkJNI.c_Spark_GetParameterUint32(sparkHandle, SparkParameters.kHardLimitRevEn.value);
+
+    return LimitSwitchConfig.Behavior.fromId(value);
   }
 
   public LimitSwitchConfig.Type getReverseSwitchType() {
     boolean value =
         CANSparkJNI.c_Spark_GetParameterBool(
-            sparkHandle, SparkParameter.kLimitSwitchRevPolarity.value);
+            sparkHandle, SparkParameters.kLimitSwitchRevPolarity.value);
 
     return value ? LimitSwitchConfig.Type.kNormallyOpen : LimitSwitchConfig.Type.kNormallyClosed;
+  }
+
+  public double getReverseLimitSwitchPosition() {
+    float value =
+        CANSparkJNI.c_Spark_GetParameterFloat32(
+            sparkHandle, SparkParameters.kLimitSwitchRevPosition.value);
+
+    return value;
   }
 }

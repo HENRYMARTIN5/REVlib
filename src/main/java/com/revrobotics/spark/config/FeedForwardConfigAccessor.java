@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,46 +31,64 @@ package com.revrobotics.spark.config;
 import com.revrobotics.jni.CANSparkJNI;
 import com.revrobotics.spark.ClosedLoopSlot;
 
-public class SmartMotionConfigAccessor {
+public class FeedForwardConfigAccessor {
   private final long sparkHandle;
 
-  protected SmartMotionConfigAccessor(long sparkHandle) {
+  protected FeedForwardConfigAccessor(long sparkHandle) {
     this.sparkHandle = sparkHandle;
   }
 
-  public double getMaxVelocity() {
-    return getMaxVelocity(ClosedLoopSlot.kSlot0);
+  public double getkS() {
+    return getkS(ClosedLoopSlot.kSlot0);
   }
 
-  public double getMaxAcceleration() {
-    return getMaxAcceleration(ClosedLoopSlot.kSlot0);
+  public double getkV() {
+    return getkV(ClosedLoopSlot.kSlot0);
   }
 
-  public double getMinOutputVelocity() {
-    return getMinOutputVelocity(ClosedLoopSlot.kSlot0);
+  public double getkA() {
+    return getkA(ClosedLoopSlot.kSlot0);
   }
 
-  public double getAllowedClosedLoopError() {
-    return getAllowedClosedLoopError(ClosedLoopSlot.kSlot0);
+  public double getkG() {
+    return getkG(ClosedLoopSlot.kSlot0);
   }
 
-  public double getMaxVelocity(ClosedLoopSlot slot) {
+  public double getkCos() {
+    return getkCos(ClosedLoopSlot.kSlot0);
+  }
+
+  public double getkCosRatio() {
+    return getkCosRatio(ClosedLoopSlot.kSlot0);
+  }
+
+  public double getkS(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kSmartMotionMaxVelocity_0.value + slot.value * 4);
+        sparkHandle, SparkParameters.kS_0.value + slot.value * 5);
   }
 
-  public double getMaxAcceleration(ClosedLoopSlot slot) {
+  public double getkV(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kSmartMotionMaxAccel_0.value + slot.value * 4);
+        sparkHandle, SparkParameters.kV_0.value + slot.value * 8);
   }
 
-  public double getMinOutputVelocity(ClosedLoopSlot slot) {
+  public double getkA(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kSmartMotionMinVelOutput_0.value + slot.value * 4);
+        sparkHandle, SparkParameters.kA_0.value + slot.value * 5);
   }
 
-  public double getAllowedClosedLoopError(ClosedLoopSlot slot) {
+  public double getkG(ClosedLoopSlot slot) {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kSmartMotionAllowedClosedLoopError_0.value + slot.value * 4);
+        sparkHandle, SparkParameters.kG_0.value + slot.value * 5);
+  }
+
+  public double getkCos(ClosedLoopSlot slot) {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kCos_0.value + slot.value * 5);
+  }
+
+  public double getkCosRatio(ClosedLoopSlot slot) {
+    return CANSparkJNI.c_Spark_GetParameterFloat32(
+        sparkHandle, SparkParameters.kCosRatio_0.value + slot.value);
   }
 }

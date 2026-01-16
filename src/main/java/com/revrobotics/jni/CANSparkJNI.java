@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2024 REV Robotics
+ * Copyright (c) 2020-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,17 +28,23 @@
 
 package com.revrobotics.jni;
 
+import com.revrobotics.spark.SparkLowLevel;
+import org.jspecify.annotations.Nullable;
+
 public class CANSparkJNI extends RevJNIWrapper {
   // CANSparkLowLevel
   public static native int c_Spark_RegisterId(int deviceId);
 
   public static native long c_Spark_Create(int deviceId, int motortype, int sparkModel);
 
+  public static native void c_Spark_Close(long handle);
+
   public static native void c_Spark_Destroy(long handle);
 
   public static native int c_Spark_GetFirmwareVersion(long handle);
 
-  // public static native int c_Spark_GetSerialNumber(long handle, int* serialNumber[3]);
+  // public static native int c_Spark_GetSerialNumber(long handle, int*
+  // serialNumber[3]);
   public static native int c_Spark_GetDeviceId(long handle);
 
   public static native void c_Spark_SetPeriodicFrameTimeout(long handle, int timeoutMs);
@@ -92,6 +98,8 @@ public class CANSparkJNI extends RevJNIWrapper {
   // Digital Input
   public static native boolean c_Spark_GetLimitSwitch(long handle, int sw);
 
+  public static native boolean c_Spark_GetSoftLimit(long handle, int sw);
+
   // Analog
   public static native float c_Spark_GetAnalogPosition(long handle);
 
@@ -124,6 +132,16 @@ public class CANSparkJNI extends RevJNIWrapper {
   public static native int c_Spark_SetIAccum(long handle, float iAccum);
 
   public static native float c_Spark_GetIAccum(long handle);
+
+  public static native float c_Spark_GetSetpoint(long handle);
+
+  public static native boolean c_Spark_IsAtSetpoint(long handle);
+
+  public static native int c_Spark_GetSelectedSlot(long handle);
+
+  public static native float c_Spark_GetMaxMotionSetpointPosition(long handle);
+
+  public static native float c_Spark_GetMaxMotionSetpointVelocity(long handle);
 
   public static native int c_Spark_GetAPIMajorRevision();
 
@@ -194,4 +212,34 @@ public class CANSparkJNI extends RevJNIWrapper {
   public static native int c_Spark_StartFollowerModeAsync(long handle);
 
   public static native int c_Spark_StopFollowerModeAsync(long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus0 c_Spark_GetPeriodicStatus0(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus1 c_Spark_GetPeriodicStatus1(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus2 c_Spark_GetPeriodicStatus2(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus3 c_Spark_GetPeriodicStatus3(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus4 c_Spark_GetPeriodicStatus4(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus5 c_Spark_GetPeriodicStatus5(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus6 c_Spark_GetPeriodicStatus6(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus7 c_Spark_GetPeriodicStatus7(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus8 c_Spark_GetPeriodicStatus8(
+      long handle);
+
+  public static native SparkLowLevel.@Nullable PeriodicStatus9 c_Spark_GetPeriodicStatus9(
+      long handle);
 }

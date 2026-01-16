@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 REV Robotics
+ * Copyright (c) 2024-2025 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,38 +39,39 @@ public class EncoderConfigAccessor {
 
   public int getCountsPerRevolution() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kEncoderCountsPerRev.value);
+        sparkHandle, SparkParameters.kEncoderCountsPerRev.value);
   }
 
   public boolean getInverted() {
-    return CANSparkJNI.c_Spark_GetParameterBool(sparkHandle, SparkParameter.kEncoderInverted.value);
+    return CANSparkJNI.c_Spark_GetParameterBool(
+        sparkHandle, SparkParameters.kEncoderInverted.value);
   }
 
   public double getPositionConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kPositionConversionFactor.value);
+        sparkHandle, SparkParameters.kPositionConversionFactor.value);
   }
 
   public double getVelocityConversionFactor() {
     return CANSparkJNI.c_Spark_GetParameterFloat32(
-        sparkHandle, SparkParameter.kVelocityConversionFactor.value);
+        sparkHandle, SparkParameters.kVelocityConversionFactor.value);
   }
 
   public int getQuadratureAverageDepth() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-        sparkHandle, SparkParameter.kEncoderAverageDepth.value);
+        sparkHandle, SparkParameters.kEncoderAverageDepth.value);
   }
 
   public int getQuadratureMeasurementPeriod() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kEncoderSampleDelta.value)
+            sparkHandle, SparkParameters.kEncoderSampleDelta.value)
         >> 1;
   }
 
   public int getUvwAverageDepth() {
     int value =
         CANSparkJNI.c_Spark_GetParameterUint32(
-            sparkHandle, SparkParameter.kHallSensorAverageDepth.value);
+            sparkHandle, SparkParameters.kUvwSensorAverageDepth.value);
 
     return 1 << value;
   }
@@ -78,7 +79,7 @@ public class EncoderConfigAccessor {
   public int getUvwMeasurementPeriod() {
     float value =
         CANSparkJNI.c_Spark_GetParameterFloat32(
-            sparkHandle, SparkParameter.kHallSensorSampleRate.value);
+            sparkHandle, SparkParameters.kUvwSensorSampleRate.value);
     return (int) (value * 1000);
   }
 }
