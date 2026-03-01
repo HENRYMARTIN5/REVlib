@@ -210,7 +210,7 @@ public enum SparkParameters {
   kCosRatio_3(223, Type.FLOAT),
   kStatus9Period(224, Type.UINT32),
   kForceEnableStatus_9(225, Type.BOOL),
-  kDetachedEncoderDeviceID(226, Type.INT32);
+  kDetachedEncoderDeviceID(226, Type.UINT32);
 
   @SuppressWarnings("MemberName")
   public final int value;

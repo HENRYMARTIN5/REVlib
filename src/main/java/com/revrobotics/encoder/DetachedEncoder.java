@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 REV Robotics
+ * Copyright (c) 2025-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class DetachedEncoder extends NativeResourceCleaner
     implements REVDevice, RelativeEncoder {
-  private long handle;
+  protected long handle;
   private final int deviceId;
   private final AtomicBoolean isClosed = new AtomicBoolean(false);
   private final Model model;
@@ -65,6 +65,10 @@ public abstract class DetachedEncoder extends NativeResourceCleaner
     this.deviceId = id;
     this.model = model;
 
+    if (DetachedEncoderJNI.registerId(deviceId) == REVLibError.kDuplicateCANId.value) {
+      throw new IllegalStateException(
+          "A DetachedEncoder instance has already been created with this device ID: " + deviceId);
+    }
     handle = DetachedEncoderJNI.create(id, model.ordinal());
     registerCleaner(handle);
 

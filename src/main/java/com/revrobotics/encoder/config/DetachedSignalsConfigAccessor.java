@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025-2026 REV Robotics
+ * Copyright (c) 2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -26,39 +26,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * This file is auto-generated. Do NOT modify it directly.
- * See https://github.com/REVrobotics/SparkParameters
- */
-
 package com.revrobotics.encoder.config;
 
-public enum DetachedEncoderParameter {
-  kEncoderAverageDepth(0),
-  kEncoderInverted(1),
-  kPositionConversionFactor(2),
-  kVelocityConversionFactor(3),
-  kDutyCycleZeroCentered(4),
-  kDutyCycleAverageDepth(5),
-  kDutyCycleOffset(6),
-  kStatus0Period(7),
-  kStatus1Period(8),
-  kStatus2Period(9),
-  kStatus3Period(10),
-  kStatus4Period(11),
-  kAngleConversionFactor(12),
-  kDutyCycleStartPulseUs(13),
-  kDutyCycleEndPulseUs(14),
-  kDutyCyclePeriodUs(15);
+import com.revrobotics.jni.DetachedEncoderJNI;
 
-  @SuppressWarnings("MemberName")
-  public final int index;
+public class DetachedSignalsConfigAccessor {
+  protected final long handle;
 
-  DetachedEncoderParameter(int index) {
-    this.index = index;
+  protected DetachedSignalsConfigAccessor(long handle) {
+    this.handle = handle;
   }
 
-  public int getIndex() {
-    return index;
+  public int getEncoderVelocityPeriodMs() {
+    return DetachedEncoderJNI.getEncoderVelocityPeriodMs(handle);
+  }
+
+  public int getEncoderPositionPeriodMs() {
+    return DetachedEncoderJNI.getEncoderPositionPeriodMs(handle);
+  }
+
+  public int getEncoderAnglePeriodMs() {
+    return DetachedEncoderJNI.getEncoderAnglePeriodMs(handle);
   }
 }

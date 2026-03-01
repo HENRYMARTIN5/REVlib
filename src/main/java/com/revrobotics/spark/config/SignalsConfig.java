@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2024-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -694,6 +694,76 @@ public class SignalsConfig extends BaseConfig {
    */
   public SignalsConfig absoluteEncoderPositionAlwaysOn(boolean enabled) {
     setAlwaysOnCore(SparkParameters.kForceEnableStatus_5.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal representing the unadjusted
+   * duty cycle period. The default period is 20ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig unadjustedDutyCyclePeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus6Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal representing the
+   * unadjusted duty cycle period.
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig unadjustedDutyCyclePeriodAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_6.value, enabled);
+    return this;
+  }
+
+  /**
+   * Set the period (ms) of the status frame that provides the signal representing the duty cycle
+   * period. The default period is 20ms.
+   *
+   * <p>If multiple periods are set for signals within the same status frame, the minimum given
+   * value will be used.
+   *
+   * @param periodMs The period in milliseconds
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig dutyCyclePeriodMs(int periodMs) {
+    setPeriodMsCore(SparkParameters.kStatus6Period.value, periodMs);
+    return this;
+  }
+
+  /**
+   * Set whether to always enable the status frame that provides the signal representing the duty
+   * cycle period.
+   *
+   * <p>Status frames are only enabled when a signal is requested via its respective getter method,
+   * and there may be a small period of time where the signal's data is unavailable due to waiting
+   * for the SPARK to receive the command to enable the status frame. Use this method to enable the
+   * status frame at all times.
+   *
+   * <p>If multiple alwaysOn values are set for signals within the same status frame, the result
+   * from OR'ing the values will be used.
+   *
+   * @param enabled True to always enable the status frame
+   * @return The modified {@link SignalsConfig} object for method chaining
+   */
+  public SignalsConfig dutyCyclePeriodAlwaysOn(boolean enabled) {
+    setAlwaysOnCore(SparkParameters.kForceEnableStatus_6.value, enabled);
     return this;
   }
 

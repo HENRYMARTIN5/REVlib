@@ -63,7 +63,7 @@ public class DetachedSignalsConfig extends BaseConfig {
 
   /**
    * Set the period (ms) of the status frame that provides the signal returned by {@link
-   * com.revrobotics.encoder.DetachedEncoder#getPosition()}. The default period is 50ms.
+   * com.revrobotics.encoder.DetachedEncoder#getPosition()}. The default period is 20ms.
    *
    * <p>If multiple periods are set for signals within the same status frame, the minimum given
    * value will be used.
@@ -78,7 +78,7 @@ public class DetachedSignalsConfig extends BaseConfig {
 
   /**
    * Set the period (ms) of the status frame that provides the signal returned by {@link
-   * com.revrobotics.encoder.DetachedEncoder#getVelocity()}. The default period is 50ms.
+   * com.revrobotics.encoder.DetachedEncoder#getVelocity()}. The default period is 20ms.
    *
    * <p>If multiple periods are set for signals within the same status frame, the minimum given
    * value will be used.
@@ -93,7 +93,7 @@ public class DetachedSignalsConfig extends BaseConfig {
 
   /**
    * Set the period (ms) of the status frame that provides the signal returned by {@link
-   * com.revrobotics.encoder.DetachedEncoder#getAngle()}. The default period is 50ms.
+   * com.revrobotics.encoder.DetachedEncoder#getAngle()}. The default period is 20ms.
    *
    * <p>If multiple periods are set for signals within the same status frame, the minimum given
    * value will be used.

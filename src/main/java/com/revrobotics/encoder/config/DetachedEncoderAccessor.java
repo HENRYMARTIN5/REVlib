@@ -31,10 +31,23 @@ package com.revrobotics.encoder.config;
 import com.revrobotics.jni.DetachedEncoderJNI;
 
 public class DetachedEncoderAccessor {
-  private final long handle;
+  protected final long handle;
+
+  /**
+   * Accessor for parameters relating to the Status Signals. To configure these values, use {@link
+   * DetachedSignalsConfig} and call {@link
+   * com.revrobotics.encoder.DetachedEncoder#configure(DetachedEncoderConfig,
+   * com.revrobotics.ResetMode)}.
+   *
+   * <p>NOTE: This uses calls that are blocking to retrieve parameters and should be used
+   * infrequently.
+   */
+  public final DetachedSignalsConfigAccessor signals;
 
   public DetachedEncoderAccessor(long handle) {
     this.handle = handle;
+
+    signals = new DetachedSignalsConfigAccessor(handle);
   }
 
   public boolean isInverted() {
@@ -61,11 +74,23 @@ public class DetachedEncoderAccessor {
     return DetachedEncoderJNI.getAngleConversionFactor(handle);
   }
 
-  public boolean isZeroCentered() {
+  public boolean isDutyCycleZeroCentered() {
     return DetachedEncoderJNI.isDutyCycleZeroCentered(handle);
   }
 
-  public float getAbsoluteOffset() {
+  public float getDutyCycleOffset() {
     return DetachedEncoderJNI.getDutyCycleOffset(handle);
+  }
+
+  public double getDutyCycleStartPulseUs() {
+    return DetachedEncoderJNI.getDutyCycleStartPulseUs(handle);
+  }
+
+  public double getDutyCycleEndPulseUs() {
+    return DetachedEncoderJNI.getDutyCycleEndPulseUs(handle);
+  }
+
+  public double getDutyCyclePeriodUs() {
+    return DetachedEncoderJNI.getDutyCyclePeriodUs(handle);
   }
 }

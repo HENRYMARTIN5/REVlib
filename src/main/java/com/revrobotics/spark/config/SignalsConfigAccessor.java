@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 REV Robotics
+ * Copyright (c) 2024-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -210,6 +210,28 @@ public class SignalsConfigAccessor {
   public boolean getAbsoluteEncoderPositionAlwaysOn() {
     return CANSparkJNI.c_Spark_GetParameterUint32(
             sparkHandle, SparkParameters.kForceEnableStatus_5.value)
+        != 0;
+  }
+
+  public int getUnadjustedDutyCyclePeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus6Period.value);
+  }
+
+  public boolean getUnadjustedDutyCyclePeriodAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_6.value)
+        != 0;
+  }
+
+  public int getDutyCyclePeriodMs() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+        sparkHandle, SparkParameters.kStatus6Period.value);
+  }
+
+  public boolean getDutyCyclePeriodAlwaysOn() {
+    return CANSparkJNI.c_Spark_GetParameterUint32(
+            sparkHandle, SparkParameters.kForceEnableStatus_6.value)
         != 0;
   }
 

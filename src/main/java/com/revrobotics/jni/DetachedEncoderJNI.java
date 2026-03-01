@@ -30,7 +30,7 @@ package com.revrobotics.jni;
 
 import com.revrobotics.encoder.DetachedEncoder;
 
-public abstract class DetachedEncoderJNI {
+public abstract class DetachedEncoderJNI extends RevJNIWrapper {
   public static native long create(int id, int model);
 
   public static native int registerId(int id);
@@ -79,6 +79,12 @@ public abstract class DetachedEncoderJNI {
 
   public static native float getDutyCycleOffset(long handle);
 
+  public static native float getDutyCycleStartPulseUs(long handle);
+
+  public static native float getDutyCycleEndPulseUs(long handle);
+
+  public static native float getDutyCyclePeriodUs(long handle);
+
   public static native DetachedEncoder.PeriodicStatus0 getStatus0(long handle);
 
   public static native DetachedEncoder.PeriodicStatus1 getStatus1(long handle);
@@ -88,4 +94,10 @@ public abstract class DetachedEncoderJNI {
   public static native DetachedEncoder.PeriodicStatus3 getStatus3(long handle);
 
   public static native DetachedEncoder.PeriodicStatus4 getStatus4(long handle);
+
+  public static native int getEncoderVelocityPeriodMs(long handle);
+
+  public static native int getEncoderPositionPeriodMs(long handle);
+
+  public static native int getEncoderAnglePeriodMs(long handle);
 }

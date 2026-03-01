@@ -49,6 +49,21 @@ public class DetachedEncoderConfig extends BaseConfig {
    */
   public DetachedEncoderConfig apply(DetachedEncoderConfig other) {
     super.apply(other);
+    this.signals.apply(other.signals);
+    return this;
+  }
+
+  /**
+   * Applies settings from a {@link DetachedSignalsConfig} to this {@link DetachedEncoderConfig}.
+   *
+   * <p>Settings in the provided config will overwrite existing values in this object. Settings not
+   * specified in the provided config remain unchanged.
+   *
+   * @param config The {@link DetachedSignalsConfig} to copy settings from
+   * @return The updated {@link DetachedEncoderConfig} for method chaining
+   */
+  public DetachedEncoderConfig apply(DetachedSignalsConfig config) {
+    this.signals.apply(config);
     return this;
   }
 
@@ -70,8 +85,8 @@ public class DetachedEncoderConfig extends BaseConfig {
    * @param factor The conversion factor to multiply the native units by
    * @return The modified {@link DetachedEncoderConfig} object for method chaining
    */
-  public DetachedEncoderConfig velocityConversionFactor(float factor) {
-    putParameter(DetachedEncoderParameter.kVelocityConversionFactor.getIndex(), factor);
+  public DetachedEncoderConfig velocityConversionFactor(double factor) {
+    putParameter(DetachedEncoderParameter.kVelocityConversionFactor.getIndex(), (float) factor);
     return this;
   }
 
@@ -98,8 +113,8 @@ public class DetachedEncoderConfig extends BaseConfig {
    * @param factor The conversion factor to multiply the native units by
    * @return The modified {@link DetachedEncoderConfig} object for method chaining
    */
-  public DetachedEncoderConfig positionConversionFactor(float factor) {
-    putParameter(DetachedEncoderParameter.kPositionConversionFactor.getIndex(), factor);
+  public DetachedEncoderConfig positionConversionFactor(double factor) {
+    putParameter(DetachedEncoderParameter.kPositionConversionFactor.getIndex(), (float) factor);
     return this;
   }
 
@@ -113,8 +128,8 @@ public class DetachedEncoderConfig extends BaseConfig {
    * @param factor The conversion factor to multiply the native units by
    * @return The modified {@link DetachedEncoderConfig} object for method chaining
    */
-  public DetachedEncoderConfig angleConversionFactor(float factor) {
-    putParameter(DetachedEncoderParameter.kAngleConversionFactor.getIndex(), factor);
+  public DetachedEncoderConfig angleConversionFactor(double factor) {
+    putParameter(DetachedEncoderParameter.kAngleConversionFactor.getIndex(), (float) factor);
     return this;
   }
 
@@ -141,8 +156,53 @@ public class DetachedEncoderConfig extends BaseConfig {
    * @param offset The zero offset in the range [0, 1)
    * @return The modified {@link DetachedEncoderConfig} object for method chaining
    */
-  public DetachedEncoderConfig dutyCycleOffset(float offset) {
-    putParameter(DetachedEncoderParameter.kDutyCycleOffset.getIndex(), offset);
+  public DetachedEncoderConfig dutyCycleOffset(double offset) {
+    putParameter(DetachedEncoderParameter.kDutyCycleOffset.getIndex(), (float) offset);
     return this;
+  }
+
+  /**
+   * Set the length of the start pulse for this encoder. This pulse will be treated as the 0.0
+   * position.
+   *
+   * @param startPulseUs The minimum high pulse in microseconds
+   * @return The modified DetachedEncoderConfig object for method chaining
+   */
+  public DetachedEncoderConfig dutyCycleStartPulseUs(double startPulseUs) {
+    putParameter(DetachedEncoderParameter.kDutyCycleStartPulseUs.getIndex(), (float) startPulseUs);
+    return this;
+  }
+
+  /**
+   * Set the length of the end pulse for this encoder. This pulse will be treated as the 1.0
+   * position.
+   *
+   * @param endPulseUs The minimum low pulse in microseconds
+   * @return The modified DetachedEncoderConfig object for method chaining
+   */
+  public DetachedEncoderConfig dutyCycleEndPulseUs(double endPulseUs) {
+    putParameter(DetachedEncoderParameter.kDutyCycleEndPulseUs.getIndex(), (float) endPulseUs);
+    return this;
+  }
+
+  /**
+   * Set the expected absolute position signal period in us.
+   *
+   * @param periodUs The expected absolute position signal period
+   * @return The modified DetachedEncoderConfig object for method chaining
+   */
+  public DetachedEncoderConfig dutyCyclePeriodUs(double periodUs) {
+    putParameter(DetachedEncoderParameter.kDutyCyclePeriodUs.getIndex(), (float) periodUs);
+    return this;
+  }
+
+  @Override
+  public String flatten() {
+    String flattenedString = "";
+
+    flattenedString += super.flatten();
+    flattenedString += signals.flatten();
+
+    return flattenedString;
   }
 }
