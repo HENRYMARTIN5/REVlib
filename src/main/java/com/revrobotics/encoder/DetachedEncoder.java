@@ -213,6 +213,8 @@ public abstract class DetachedEncoder extends NativeResourceCleaner
    *
    * <p>If {@code resetMode} is {com.revrobotics.ResetMode#kResetSafeParameters}, this method will
    * reset safe writable parameters to their default values before setting the given configuration.
+   * The following parameters will not be reset by this action: CAN ID and Absolute (Duty Cycle)
+   * Zero Offset.
    *
    * @param config The desired Detached encoder configuration
    * @param resetMode Whether to reset safe parameters before setting the configuration

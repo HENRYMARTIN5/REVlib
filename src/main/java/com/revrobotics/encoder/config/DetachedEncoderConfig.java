@@ -153,6 +153,9 @@ public class DetachedEncoderConfig extends BaseConfig {
    * position as if the zero offset was set to 0, the position conversion factor was set to 1, and
    * inverted was set to false.
    *
+   * <p>NOTE: This parameter is NOT reset when configuring with {@link
+   * com.revrobotics.ResetMode#kResetSafeParameters}.
+   *
    * @param offset The zero offset in the range [0, 1)
    * @return The modified {@link DetachedEncoderConfig} object for method chaining
    */

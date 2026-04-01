@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2025 REV Robotics
+ * Copyright (c) 2018-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,6 +28,7 @@
 
 package com.revrobotics.spark;
 
+import com.revrobotics.MutableInt;
 import com.revrobotics.NativeResourceCleaner;
 import com.revrobotics.REVDevice;
 import com.revrobotics.REVLibError;
@@ -39,7 +40,6 @@ import org.jspecify.annotations.Nullable;
 
 public abstract class SparkLowLevel extends NativeResourceCleaner
     implements MotorController, REVDevice, AutoCloseable {
-  // TODO(Noah): Deprecate and introduce correctly named constants in a more appropriate spot
   public static final int kAPIMajorVersion = CANSparkJNI.c_Spark_GetAPIMajorRevision();
   public static final int kAPIMinorVersion = CANSparkJNI.c_Spark_GetAPIMinorRevision();
   public static final int kAPIBuildVersion = CANSparkJNI.c_Spark_GetAPIBuildRevision();
@@ -233,7 +233,32 @@ public abstract class SparkLowLevel extends NativeResourceCleaner
       throw new IllegalStateException(
           "A CANSparkMax instance has already been created with this device ID: " + deviceId);
     }
-    sparkHandle = CANSparkJNI.c_Spark_Create(deviceId, type.value, model.id);
+    MutableInt status = new MutableInt(0);
+    sparkHandle = CANSparkJNI.c_Spark_Create(deviceId, type.value, model.id, status);
+
+    if (REVLibError.fromInt(status.value) != REVLibError.kOk) {
+      switch (REVLibError.fromInt(status.value)) {
+        case kCantFindFirmware:
+          // Don't throw exception when no firmware is found. It's
+          // possible the device is disconnected and we don't want to stop
+          // the program if that is the case.
+          break;
+        case kFirmwareTooOld:
+        case kFirmwareTooNew:
+          // Don't throw for 2026 season. We added this late into the season. The driver will print
+          // an error in the driver station but won't throw an exception.
+          break;
+        case kSparkFlexBrushedWithoutDock:
+          throw new IllegalStateException(
+              "Cannot set motor type to kBrushed for SPARK #"
+                  + deviceId
+                  + " without a dock connected.");
+        default:
+          throw new IllegalStateException(
+              "Error (" + status.value + ") creating SPARK #" + deviceId);
+      }
+    }
+
     registerCleaner(sparkHandle);
   }
 
@@ -259,7 +284,6 @@ public abstract class SparkLowLevel extends NativeResourceCleaner
    * @return uint32_t Firmware version integer. Value is represented as 4 bytes, Major.Minor.Build
    *     H.Build L
    */
-  // TODO(Noah): Add a function that returns the different version fields as an object
   public int getFirmwareVersion() {
     throwIfClosed();
     return CANSparkJNI.c_Spark_GetFirmwareVersion(sparkHandle);
@@ -478,9 +502,10 @@ public abstract class SparkLowLevel extends NativeResourceCleaner
     return setpointCommand(value, ctrl, pidSlot, arbFeedforward, 0);
   }
 
-  // TODO(Noah): Deprecate all setpointCommand() methods in favor of the corresponding methods in
+  // TODO(Noah): Deprecate all setpointCommand() methods in favor of the
+  // corresponding methods in
   // SparkClosedLoopController.
-  //             Next year, we can set them all to be protected.
+  // Next year, we can set them all to be protected.
   REVLibError setpointCommand(
       double value, SparkMax.ControlType ctrl, int pidSlot, double arbFeedforward, int arbFFUnits) {
     throwIfClosed();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2025 REV Robotics
+ * Copyright (c) 2020-2026 REV Robotics
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,6 +28,7 @@
 
 package com.revrobotics.jni;
 
+import com.revrobotics.MutableInt;
 import com.revrobotics.spark.SparkLowLevel;
 import org.jspecify.annotations.Nullable;
 
@@ -35,7 +36,8 @@ public class CANSparkJNI extends RevJNIWrapper {
   // CANSparkLowLevel
   public static native int c_Spark_RegisterId(int deviceId);
 
-  public static native long c_Spark_Create(int deviceId, int motortype, int sparkModel);
+  public static native long c_Spark_Create(
+      int deviceId, int motortype, int sparkModel, MutableInt mutableStatusObj);
 
   public static native void c_Spark_Close(long handle);
 
